@@ -26,11 +26,14 @@
 </nav>
   </nav>
   <main>
-    <div id="loginDiv">
-      <form id="login" action="">
-        <label for="user">User Name: </label><input name="user" type="text"><br><br>
-        <label for="password">Password: </label><input name="password" type="password"><br><br>
-        <input type="submit">
+    <div id="contactDiv">
+      <form id="contactForm" action="https://formspree.io/f/mvondwrz" method="POST">
+        <label for="fname">First Name: </label><input name="fname" type="text"><br><br>
+        <label for="lname">Last Name: </label><input name="lname" type="text"><br><br>
+        <label for="email">Email: </label><input name="email" type="email"><br><br>
+        <label for="reason">Reason for contacting us:</label><br>
+        <textarea name="reason"></textarea><br><br>
+        <span id="inputButtonSpan"><input type="submit" value="Submit"></span>
       </form>
     </div>
   </main>

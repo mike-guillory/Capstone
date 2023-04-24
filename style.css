@@ -3,20 +3,195 @@
 body{
   /* border: 1px solid black; */
   width: 1000px;
-  min-width: 200px;
-  height: 100%;
+  /* min-width: 200px; */
+  /* height: 95vh; */
   margin: 10px auto;
   font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+a{
+  text-decoration: none;
 }
 
 #titleHeading{
   text-align: center;
-  font-size: 5em;
-  font-weight:bolder;
+  font-size: 4em;
+  font-weight: bolder;
   margin: 10px;
 }
 
 nav{
   background-color: darkblue;
-  height: 50px;
+  height: 30px;
+  font-weight: 700;
+}
+
+nav > ul{
+  /* border: 1px solid yellow; */
+  padding-top: 7px;
+}
+
+nav > ul > li{
+  display: inline-block;
+}
+
+nav > ul > li > a{
+  color: white;
+  margin-left: 20px;
+}
+
+.fa-bars{
+  color: white;
+  margin: 15px 10px;
+  
+}
+
+main{
+  /* border: 1px solid; */
+  /* height: 100%; */
+  min-height: 60vh;
+}  
+
+#loginDiv{
+  height: 150px;
+  width: 350px;
+  background-color: #7261ed;
+  margin: 100px auto;
+  padding-top: 40px;
+  border-radius: 10px;
+}
+
+#login{
+  text-align: right;
+  padding-right: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  /* width: 502px; */
+  /* border: 1px solid; */
+  margin: auto;
+}
+
+input[type=submit]{
+  margin-right: 100px;
+}
+
+#contactDiv{
+  margin: 40px auto;
+  padding: 40px;  
+  height: 340px;
+  width: 500px;
+  border: 1px solid;
+  background-color: #7261ed;
+  border-radius: 10px;
+}
+
+#contactForm{
+  /* border: 1px solid black; */
+  width: 323px;
+  text-align: left;
+  padding-right: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: auto;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+#contactForm > input[type=submit]{
+  margin: 
+}
+
+textarea{
+  resize: none;
+  margin-top: 5px;
+  height: 12em;
+  width: 26.5em;
+}
+
+#inputButtonSpan{
+  margin-left: 150px;
+}
+
+footer{
+background-color: blue;
+height: 100px;
+width: 100%;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+text-align: center;
+color: white;
+padding-top: 4%;
+font-size: 14px;
+}
+
+footer > p{
+  margin: 5px;
+}
+
+/*///////////////// Media Querries /////////////////////*/
+/* ////////////////////////////////////////////////// */
+@media(min-width: 380px){
+
+  nav > .fa-bars {
+    display: none;
+  }
+}
+
+@media(max-width: 375px){
+
+  body{
+      width: 90vw;
+  }
+
+  .hidden--mobile {
+    display: none;
+  }
+
+  .pipes{
+    display: none;
+  }
+
+  nav > ul{
+    background-color: darkblue;
+    /* border: 1px solid yellow; */
+    margin-top: -30px;
+    padding-bottom: 10px;
+    padding-right: 54px;
+    text-align: center;
+    width: 72%;
+  }
+
+  nav > ul > li{
+    /* border: 1px solid yellow; */
+    display: block;
+  }
+
+  #titleHeading{
+    font-size: 2.5em;
+  }
+
+  #loginDiv{
+    width: 320px;
+  }
+
+  form{
+    padding-right: 40px;
+  }
+
+  #contactDiv{
+    width: 70%;
+  }
+
+  #contactForm{
+    width: 90%;
+  }
+
+  textarea{
+    height: 9.5em;
+    width: 17em;
+  }
 }
