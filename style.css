@@ -1,6 +1,8 @@
 /* Use Google Fonts */
 
 body{
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
   /* border: 1px solid black; */
   width: 1000px;
   /* min-width: 200px; */
@@ -9,6 +11,11 @@ body{
   font-family: Arial, Helvetica, sans-serif;
   border: 1px solid;
   border-radius: 10px;
+}
+
+header{
+  grid-column: 1/ 4;
+  grid-row: 1 / 2;
 }
 
 a{
@@ -23,14 +30,15 @@ a{
 }
 
 nav{
+  grid-column: 1/ 4;
+  grid-row: 2 / 3;
   background-color: darkblue;
   height: 30px;
   font-weight: 700;
 }
 
 nav > ul{
-  /* border: 1px solid yellow; */
-  padding-top: 7px;
+  margin-top: 7px;
 }
 
 nav > ul > li{
@@ -49,6 +57,8 @@ nav > ul > li > a{
 }
 
 main{
+  grid-column: 1/ 4;
+  grid-row: 3 / 4;
   /* border: 1px solid; */
   /* height: 100%; */
   min-height: 60vh;
@@ -117,6 +127,8 @@ textarea{
 }
 
 footer{
+grid-column: 1/ 4;
+grid-row: 4 / 5;
 background-color: blue;
 height: 100px;
 width: 100%;
@@ -157,17 +169,15 @@ footer > p{
 
   nav > ul{
     background-color: darkblue;
-    /* border: 1px solid yellow; */
-    margin-top: -30px;
+    margin-top: -20px;
     padding-bottom: 10px;
-    padding-right: 54px;
     text-align: center;
-    width: 72%;
+
   }
 
   nav > ul > li{
-    /* border: 1px solid yellow; */
     display: block;
+    margin-left: -40px;
   }
 
   #titleHeading{
@@ -175,11 +185,24 @@ footer > p{
   }
 
   #loginDiv{
-    width: 320px;
+    max-width: 90%;
   }
 
   form{
     padding-right: 40px;
+  }
+
+  input[type=text]{
+    max-width: 60%;
+  }
+
+  input[type=password]{
+    max-width: 60%;
+  }
+
+  input[type=submit]{
+    margin-top: 5%;
+    margin-right: 30%;
   }
 
   #contactDiv{
@@ -187,7 +210,7 @@ footer > p{
   }
 
   #contactForm{
-    width: 90%;
+    /* width: 90%; */
   }
 
   textarea{
