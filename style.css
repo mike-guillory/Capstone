@@ -1,21 +1,18 @@
-/* Use Google Fonts */
-
 body{
-  display: grid;
-  grid-template-columns: 33.3% 33.3% 33.3%;
-  /* border: 1px solid black; */
-  width: 1000px;
-  /* min-width: 200px; */
-  /* height: 95vh; */
-  margin: 10px auto;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#root{
+  width: 1000px;
+  margin: 10px auto;
   border: 1px solid;
   border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 header{
-  grid-column: 1/ 4;
-  grid-row: 1 / 2;
+  grid-column: 1 / 4;
 }
 
 a{
@@ -30,15 +27,14 @@ a{
 }
 
 nav{
-  grid-column: 1/ 4;
-  grid-row: 2 / 3;
+  grid-column: 1 / 4;
   background-color: darkblue;
-  height: 30px;
   font-weight: 700;
 }
 
 nav > ul{
   margin-top: 7px;
+  margin-bottom: 7px;
 }
 
 nav > ul > li{
@@ -53,16 +49,17 @@ nav > ul > li > a{
 .fa-bars{
   color: white;
   margin: 15px 10px;
-  
+
 }
 
 main{
-  grid-column: 1/ 4;
-  grid-row: 3 / 4;
-  /* border: 1px solid; */
-  /* height: 100%; */
+  grid-column: 1 / 4;
   min-height: 60vh;
-}  
+}
+
+.pageHeading{
+  text-align: center;
+}
 
 #loginDiv{
   height: 150px;
@@ -79,18 +76,16 @@ main{
   font-size: 14px;
   font-weight: bold;
   color: white;
-  /* width: 502px; */
-  /* border: 1px solid; */
   margin: auto;
 }
 
-input[type=submit]{
+#login > input[type=submit]{
   margin-right: 100px;
 }
 
 #contactDiv{
   margin: 40px auto;
-  padding: 40px;  
+  padding: 40px;
   height: 340px;
   width: 500px;
   border: 1px solid;
@@ -99,20 +94,16 @@ input[type=submit]{
 }
 
 #contactForm{
-  /* border: 1px solid black; */
-  width: 323px;
+  /* width: 323px; */
+  width: 100%;
   text-align: left;
-  padding-right: 50px;
+  /* padding-right: 50px; */
   font-size: 14px;
   font-weight: bold;
   margin: auto;
   font-size: 14px;
   font-weight: bold;
   color: white;
-}
-
-#contactForm > input[type=submit]{
-  margin: 
 }
 
 textarea{
@@ -122,13 +113,13 @@ textarea{
   width: 26.5em;
 }
 
-#inputButtonSpan{
+#contactForm > input[type=submit]{
   margin-left: 150px;
 }
 
 footer{
-grid-column: 1/ 4;
-grid-row: 4 / 5;
+grid-column: 1 / span 3;
+/* grid-row: 4 / 5; */
 background-color: blue;
 height: 100px;
 width: 100%;
@@ -140,12 +131,7 @@ padding-top: 4%;
 font-size: 14px;
 }
 
-footer > p{
-  margin: 5px;
-}
-
-/*///////////////// Media Querries /////////////////////*/
-/* ////////////////////////////////////////////////// */
+/*/////// Media Querries /////////////////////*/
 @media(min-width: 380px){
 
   nav > .fa-bars {
@@ -155,7 +141,7 @@ footer > p{
 
 @media(max-width: 375px){
 
-  body{
+  #root{
       width: 90vw;
   }
 
@@ -170,14 +156,13 @@ footer > p{
   nav > ul{
     background-color: darkblue;
     margin-top: -20px;
-    padding-bottom: 10px;
     text-align: center;
-
   }
 
   nav > ul > li{
     display: block;
-    margin-left: -40px;
+    padding-right: 60px;
+    margin-bottom: 2px;
   }
 
   #titleHeading{
@@ -209,8 +194,8 @@ footer > p{
     width: 70%;
   }
 
-  #contactForm{
-    /* width: 90%; */
+  #contactForm > input[type=submit]{
+    margin-left: 90px;
   }
 
   textarea{
