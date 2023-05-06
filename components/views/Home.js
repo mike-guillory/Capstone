@@ -1,6 +1,6 @@
 import html from "html-literal";
 
-export default () => html`
+export default (state) => html`
 <main>
     <div id="loginDiv">
       <form id="login" action="">
@@ -8,6 +8,7 @@ export default () => html`
         <label for="password">Password: </label><input name="password" type="password"><br><br>
         <input type="submit">
       </form>
+      <!-- <div>${state.weather.temp}</div> -->
     </div>
 </main>
 `;
