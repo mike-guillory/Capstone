@@ -5,7 +5,7 @@ import { Header, Nav, Main, Footer } from "./components";
 import * as store from "./store";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
-import axios from "axios";
+// import axios from "axios";
 
 // 2. Declaring router 
 const router = new Navigo("/");
