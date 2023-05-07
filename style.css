@@ -8,11 +8,11 @@ body{
   border: 1px solid;
   border-radius: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 header{
-  grid-column: 1 / 4;
+  grid-column: 1 / 7;
 }
 
 a{
@@ -21,20 +21,23 @@ a{
 
 #titleHeading{
   text-align: center;
-  font-size: 4em;
+  font-size: 2em;
   font-weight: bolder;
   margin: 10px;
 }
 
 nav{
-  grid-column: 1 / 4;
+  grid-column: 1 / 7;
   background-color: darkblue;
   font-weight: 700;
+  font-size: .9em;
+  padding-left: 0px;
 }
 
 nav > ul{
   margin-top: 7px;
   margin-bottom: 7px;
+  margin-left: -20px;
 }
 
 nav > ul > li{
@@ -43,7 +46,7 @@ nav > ul > li{
 
 nav > ul > li > a{
   color: white;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .fa-bars{
@@ -53,12 +56,63 @@ nav > ul > li > a{
 }
 
 main{
-  grid-column: 1 / 4;
-  min-height: 60vh;
+  grid-column: 1 / 7;
+  min-height: 73vh;
+}
+
+#scheduleDiv{
+  display: grid;
+}
+
+.scheduleTable{
+  margin: auto;
+  border-collapse: collapse;
+  width: 85%;
+}
+
+.scheduleTable > thead{
+  border-bottom: 2px solid black;
+}
+
+.scheduleTable > thead > tr > th{
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 14px;
+}
+
+.scheduleTable > tbody > tr > td{
+  padding-left: 5px;
+  text-align: center;
+  border: 1px solid black;
+  height: 20px;
+  font-size: 14px;
+}
+
+.scheduleTable > tbody > tr > td.billName{
+  text-align: left;
+}
+
+#totalsDiv{
+  display: grid;
+  grid-template-columns: 167px 167px 167px 167px 167px 167px;
+}
+
+.totalsTable{
+  grid-column: 4 / 7;
+  margin: 20px auto;
+  border-spacing: 0px;
+}
+
+.totalsTable > tbody > tr > td{
+  padding-left: 5px;
+  min-width: 120px;
+  height: 20px;
+  font-size: 14px;
 }
 
 .pageHeading{
   text-align: center;
+  font-size: 1em;
 }
 
 #loginDiv{
@@ -112,23 +166,23 @@ textarea{
   height: 12em;
   width: 26.5em;
 }
-
+font-size
 #contactForm > input[type=submit]{
   margin-left: 150px;
 }
 
 footer{
-grid-column: 1 / span 3;
+grid-column: 1 / span 6;
 /* grid-row: 4 / 5; */
 background-color: blue;
-height: 100px;
+height: 80px;
 width: 100%;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 text-align: center;
 color: white;
-padding-top: 4%;
-font-size: 14px;
+padding-top: 2%;
+font-size: 10px;
 }
 
 /*/////// Media Querries /////////////////////*/
@@ -156,6 +210,7 @@ font-size: 14px;
   nav > ul{
     background-color: darkblue;
     margin-top: -20px;
+    margin-left: 0px;
     text-align: center;
   }
 
@@ -202,4 +257,28 @@ font-size: 14px;
     height: 9.5em;
     width: 17em;
   }
+
+  .scheduleTable {
+    border: 2px solid black;
+  }
+
+  .scheduleTable > thead{
+    border: 1px solid black;
+    border-bottom: 2px solid black;
+  }
+  
+  .scheduleTable > thead > tr > th{
+    padding: 3px;
+    font-size: 10px;
+    border: 1px solid black;
+  }
+  
+  .scheduleTable > tbody > tr > td{
+    font-size: 10px;
+  }
+
+  #totalsDiv{
+    display: block;
+  }
+
 }

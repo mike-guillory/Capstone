@@ -37,42 +37,42 @@ function afterRender(){
 }
 
 // 5. Router.hooks
-router.hooks({
-  before: (done, params) => {
-    const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-    // Add a switch case statement to handle multiple routes
-    switch (view) {
-      case "Home":
-        axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=houston`)
-        .then(response => {
-          // Convert Kelvin to Fahrenheit since OpenWeatherMap does provide otherwise
-          const kelvinToFahrenheit = kelvinTemp =>
-          Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
-          store.Home.weather = {
-            city: response.data.name,
-            temp: kelvinToFahrenheit(response.data.main.temp),
-            feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
-            description: response.data.weather[0].main
-          };
-          done();
-        })
-        .catch((error) => {
-            console.log("Error:", error );
-            done();
-        });
-        break;
-        /////////////////////////////
-        /////////////////////////////
-        // Additional cases as needed
-        /////////////////////////////
-        /////////////////////////////
-    }
-  },
-  already: (params) => {
-    const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-  }
-});
+// router.hooks({
+//   before: (done, params) => {
+//     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
+//     // Add a switch case statement to handle multiple routes
+//     switch (view) {
+//       case "Home":
+//         axios
+//         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=houston`)
+//         .then(response => {
+//           // Convert Kelvin to Fahrenheit since OpenWeatherMap does provide otherwise
+//           const kelvinToFahrenheit = kelvinTemp =>
+//           Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+//           store.Home.weather = {
+//             city: response.data.name,
+//             temp: kelvinToFahrenheit(response.data.main.temp),
+//             feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
+//             description: response.data.weather[0].main
+//           };
+//           done();
+//         })
+//         .catch((error) => {
+//             console.log("Error:", error );
+//             done();
+//         });
+//         break;
+//         /////////////////////////////
+//         /////////////////////////////
+//         // Additional cases as needed
+//         /////////////////////////////
+//         /////////////////////////////
+//     }
+//   },
+//   already: (params) => {
+//     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
+//   }
+// });
 
 // 6.Router.on
 router.on({
