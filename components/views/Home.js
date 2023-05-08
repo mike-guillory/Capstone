@@ -8,7 +8,6 @@ export default (state) => html`
         <label for="password">Password: </label><input name="password" type="password"><br><br>
         <input type="submit">
       </form>
-      <!-- <div>${state.weather.temp}</div> -->
     </div>
 </main>
 `;
