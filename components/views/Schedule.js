@@ -4,6 +4,7 @@ export default (state) => html`
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
   <div id="scheduleDiv">
+    <!-- I've just hard-coded a table here to start to nail down the layout. -->
     <table class="scheduleTable">
      <thead>
         <tr>

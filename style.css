@@ -211,6 +211,10 @@ font-size: 10px;
     display: none;
   }
 
+  #currentWeather{
+    font-size: 14px;
+  }
+
   nav > ul{
     background-color: darkblue;
     margin-top: -20px;

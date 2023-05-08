@@ -12,12 +12,6 @@ const router = new Navigo("/");
 
 let weather= {};
 
-weather = {
-  city: "Houston",
-  temp: 78,
-  description: "Overcast with light occasional rain"
-};
-
 // 3. Render function
 function render(state = store.Home){
   document.querySelector("#root").innerHTML =`
@@ -34,6 +28,7 @@ function render(state = store.Home){
 
 // 4. Event Handler function
 function afterRender(){
+
   document.querySelector(".fa-bars").addEventListener("click", () => {
       document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
@@ -47,36 +42,58 @@ function afterRender(){
 router.hooks({
   before: (done, params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-    // Add a switch case statement to handle multiple routes
-    switch (view) {
-      case "Home":
-        axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=houston`)
-        .then(response => {
+
+    let lat;
+    let lon;
+    // Get the users lat and lon to pass to the getWeather function where the axios.get now resides.
+    // Since the weather is now part of the header, I need to get it no matter what page the user
+    // navigates to.
+    function getCoords(position){
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
+      getWeather(lat, lon);
+    };
+    // I need to figure out what to do if a user doesn't share their location.
+    function errorCallback(error){
+      console.log("Error:", error );
+    };
+
+    const postion = navigator.geolocation.getCurrentPosition(getCoords, errorCallback);
+
+    function getWeather(lat, lon){
+      axios
+       .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&lat=${lat}&lon=${lon}`)
+       .then(response => {
           // Convert Kelvin to Fahrenheit since OpenWeatherMap does provide otherwise
           const kelvinToFahrenheit = kelvinTemp =>
           Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
-          store.Home.weather = {
-            city: response.data.name,
-            temp: kelvinToFahrenheit(response.data.main.temp),
-            feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
-            description: response.data.weather[0].main
-          };
-          done();
-        })
-        .catch((error) => {
-            console.log("Error:", error );
+            weather = {
+              city: response.data.name,
+              temp: kelvinToFahrenheit(response.data.main.temp),
+              feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
+              description: response.data.weather[0].main
+            };
             done();
-        });
-        break;
-      default:
-        done();
-        /////////////////////////////
-        /////////////////////////////
-        // Additional cases as needed
-        /////////////////////////////
-        /////////////////////////////
-    }
+          })
+          .catch((error) => {
+              console.log("Error:", error );
+              done();
+          });
+        };
+    // Add a switch case statement to handle multiple routes
+    // switch (view) {
+    //   case "Home":
+
+        
+    //     break;
+    //   default:
+    //     done();
+    //     /////////////////////////////
+    //     /////////////////////////////
+    //     // Additional cases as needed
+    //     /////////////////////////////
+    //     /////////////////////////////
+    // }
   },
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
