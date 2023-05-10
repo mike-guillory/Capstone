@@ -56,6 +56,7 @@ router.hooks({
     // I need to figure out what to do if a user doesn't share their location.
     function errorCallback(error){
       console.log("Error:", error );
+      done();
     };
 
     const postion = navigator.geolocation.getCurrentPosition(getCoords, errorCallback);
@@ -77,7 +78,7 @@ router.hooks({
           })
           .catch((error) => {
               console.log("Error:", error );
-              done();
+              // done();
           });
         };
     // Add a switch case statement to handle multiple routes
@@ -97,6 +98,7 @@ router.hooks({
   },
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
+    render(store[view]);
   }
 });
 
