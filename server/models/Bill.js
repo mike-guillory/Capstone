@@ -8,12 +8,12 @@ const billSchema = new mongoose.Schema({
   },
 
   amount:{
-    type: Double,
+    type: Number,
     required: true,
   },
 
   total:{
-    type: Double,
+    type: Number,
   },
 
   dueDate:{
@@ -30,3 +30,7 @@ const billSchema = new mongoose.Schema({
     type: Date,
   }
 });
+
+const Bill = mongoose.model('Bill', billSchema);
+
+module.exports = Bill;

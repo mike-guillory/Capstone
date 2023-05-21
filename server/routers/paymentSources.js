@@ -1,14 +1,14 @@
 const {Router, response} = require("express");
-const { request } = require("http");
-const Bill = require("../models/Bill");
+const {request} = require("http");
+const PaymentSource = require("../models/PaymentSource");
 const router = Router();
 
 // CREATE
 router.post("/", (request, response) => {
 
-  const newBill = new Bill(request.body);
+  const newPaymentSource = new PaymentSource(request.body);
 
-  newBill.save((error, record) => {
+  newPaymentSource.save((error, record) => {
     if (error?.name === "ValidationError") return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
 
@@ -18,7 +18,7 @@ router.post("/", (request, response) => {
 
 // READ ALL
 router.get("/", (request, response) => {
-  Bill.find({}, (error, record) => {
+  PaymentSource.find({}, (error, record) => {
     if(error) return response.status(500).json(error.errors);
     response.json(record);
   });
@@ -26,7 +26,7 @@ router.get("/", (request, response) => {
 
 // READ ONE
 router.get("/:id", (request, response) => {
-  Bill.findById(request.params.id, (error, record) => {
+  PaymentSource.findById(request.params.id, (error, record) => {
     if(error) return response.status(500).json(error.errors);
     response.json(record);
   });
@@ -37,15 +37,13 @@ router.put("/:id", (request, response) => {
 
   const body = request.body;
 
-  Bill.findByIdAndUpdate(request.params.id,
+  PaymentSource.findByIdAndUpdate(request.params.id,
     {
       $set:{
         name: body.name,
         amount: body.amount,
-        total: body.total,
-        dueDate: body.dueDate,
-        paidFrom: body.paidFrom,
-        adjustedPayDate: body.adjustedPayDate
+        frequency: body.frequency,
+        startingDate: body.startingDate
       }
     },
     {
@@ -64,7 +62,7 @@ router.put("/:id", (request, response) => {
 
 // DELETE
 router.delete("/:id", (request, response) => {
-  Bill.findByIdAndRemove(request.params.id, {}, (error, record) => {
+  PaymentSource.findByIdAndRemove(request.params.id, {}, (error, record) => {
     if(error) return response.status(500).json(error.errors);
     response.json(record);
   });

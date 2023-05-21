@@ -6,9 +6,8 @@ const paymentSourceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
-  type:{
-    type: String,
-    required: true
-  }
 });
+
+const PaymentSource = mongoose.model("PaymentSource", paymentSourceSchema);
+
+module.exports = PaymentSource;

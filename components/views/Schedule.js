@@ -1,136 +1,88 @@
 import html from "html-literal";
+import { forEach } from "lodash";
+
+
 
 export default (state) => html`
+
+${(() => {
+  state.bills.sort((a, b) => {
+    if (a.dueDate < b.dueDate) {
+      return -1;
+    }
+    if (a.dueDate > b.dueDate) {
+      return 1;
+    }
+    else{
+      return 0;
+    }
+  });
+})()}
+
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
   <div id="scheduleDiv">
-    <!-- I've just hard-coded a table here to start to nail down the layout. -->
     <table class="scheduleTable">
      <thead>
         <tr>
-          <th>Date</th>
-          <th>Bill</th>
-          <th>BoA</th>
-          <th>BoA CC</th>
-          <th>Citi</th>
-          <th>Truist</th>
-          <th>Cash</th>
-        </tr>
-      </thead>
-     <tbody>
-       <tr>
-          <td>1 Jan</td>
-          <td class="billName">Rent</td>
-          <td>$900</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-       <tr>
-          <td>4 Jan</td>
-          <td class="billName">Electric</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>$195</td>
-        </tr>
-        <tr>
-          <td>4 Jan</td>
-          <td class="billName">Comcast</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>6 Jan</td>
-          <td class="billName">Netflix</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>8 Jan</td>
-          <td class="billName">Affirm</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>8 Jan</td>
-          <td class="billName">BoA CC</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>Totals</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+
+        ${(() => {
+
+          let columns = [];
+          let rows = 0;
+          let returnHtml = `
+            <th>Due Date</th>
+            <th>Bill</th>`
+
+          state.bills.forEach(bill => {
+
+            if(!columns.includes(bill.paidFrom)){
+              columns.push(bill.paidFrom);
+              returnHtml += `<th>${bill.paidFrom}</th>`
+            }
+          });
+
+          returnHtml += `</tr></thead><tbody><tr>`;
+
+          state.bills.forEach(bill => {
+
+              returnHtml += `
+                <td>${bill.dueDate}</td>
+                <td>${bill.name}</td>`
+
+                for(i = 0; i < columns.length; i++){
+                  if(bill.paidFrom === columns[i]){
+                    returnHtml += `<td>${bill.amount}</td>`
+                  }
+                  else{
+                    returnHtml += `<td></td>`
+                  }
+                  }
+                  returnHtml += `</tr><tr>`
+                  rows++;
+          });
+
+
+          let c = 0;
+          for(let i = 10; i > rows; i--){
+            // returnHtml += `<tr>`
+            while(c < (columns.length + 2)){
+              returnHtml += `<td></td>`;
+              c++
+            };
+            c = 0
+            returnHtml += `</tr>`;
+          }
+
+            return html`${returnHtml}`;
+
+        })()}
+
       </tbody>
     </table>
 </div>
 <div id="totalsDiv">
-    <table class="totalsTable">
+    <table class="totalsTable" style="border: 1px solid">
       <tr>
         <td>BoA</td>
         <td>$976</td>
@@ -161,5 +113,39 @@ export default (state) => html`
       </tr>
       </table>
   </div>
-</main>
-`;
+  <script src="test.js"></script>
+</main>`;
+
+
+
+
+// ${(() => {
+//   state.bills.forEach(bill => {
+//     const thisDate = new Date(bill.dueDate);
+//     console.log(thisDate.getMonth());
+//   });
+
+// })()};
+
+// let bills = [];
+
+// ${(() => {
+
+
+
+//   // for(let i = 0; i <  state.bills.length; i++) {
+
+//   // }
+//   })};
+
+
+
+
+
+// <!-- <th id="firstDate">Date</th>
+// <th>Bill</th>
+// <th>BoA</th>
+// <th>BoA CC</th>
+// <th>Citi</th>
+// <th>Truist</th>
+// <th>Cash</th> -->
