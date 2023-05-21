@@ -4,7 +4,7 @@ import { forEach } from "lodash";
 
 
 export default (state) => html`
-
+${console.log(state)};
 ${(() => {
   state.bills.sort((a, b) => {
     if (a.dueDate < b.dueDate) {
@@ -18,6 +18,10 @@ ${(() => {
     }
   });
 })()}
+<!-- /////////////////////////////////////////////////////////////////// -->
+<!-- NEED TO SORT PAYMENTSOURCES SO THEY SHOW THE SAME ON EVERY SCHEDULE -->
+<!-- /////////////////////////////////////////////////////////////////// -->
+
 
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
