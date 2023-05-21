@@ -85,7 +85,7 @@ router.hooks({
     switch (view) {
       case "Schedule":
         axios
-          .get(`http://localhost:4040/bills`)
+          .get(`${process.env.BILLS_API_URL}/bills`)
           .then(response => {
             store.Schedule.bills = response.data;
             done();
@@ -95,7 +95,7 @@ router.hooks({
             done();
           })
           axios
-          .get(`http://localhost:4040/incomeSources`)
+          .get(`${process.env.BILLS_API_URL}/incomeSources`)
           .then(response => {
             store.Schedule.incomeSources = response.data;
             done();
