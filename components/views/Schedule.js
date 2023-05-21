@@ -18,10 +18,6 @@ ${(() => {
     }
   });
 })()}
-<!-- /////////////////////////////////////////////////////////////////// -->
-<!-- NEED TO SORT PAYMENTSOURCES SO THEY SHOW THE SAME ON EVERY SCHEDULE -->
-<!-- /////////////////////////////////////////////////////////////////// -->
-
 
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
