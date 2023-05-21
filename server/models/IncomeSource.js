@@ -1,18 +1,20 @@
 const mongoose = require("mongoose");
 
-const incomeSource = new mongoose.Schema({
+const incomeSourceSchema = new mongoose.Schema({
+
   name:{
     type: String,
     required: true
   },
   amount:{
-    type: isInteger,
+    type: Number,
     required: true
   },
 
   frequency:{
     type: String,
-    required: true
+    required: true,
+    enum: ["Weekly", "Bi-Weekly", "Monthly"]
   },
 
   startingDate:{
@@ -20,3 +22,7 @@ const incomeSource = new mongoose.Schema({
     required: true
   }
 });
+
+const IncomeSource = mongoose.model("IncomeSource", incomeSourceSchema);
+
+module.exports = IncomeSource;

@@ -10,7 +10,7 @@ import axios from "axios";
 // 2. Declaring router
 const router = new Navigo("/");
 
-let weather= {};
+let weather = {};
 
 // 3. Render function
 function render(state = store.Home){
@@ -36,6 +36,7 @@ function afterRender(){
   const date = new Date();
   const year = date.getFullYear();
   document.getElementById("date").innerHTML = year;
+  // console.log(document.querySelector("thead > tr > th").nextElementSibling.innerHTML);
 }
 
 // 5. Router.hooks
@@ -53,7 +54,6 @@ router.hooks({
       lon = position.coords.longitude;
       getWeather(lat, lon);
     };
-    // I need to figure out what to do if a user doesn't share their location.
     function errorCallback(error){
       console.log("Error:", error );
       done();
@@ -78,27 +78,41 @@ router.hooks({
           })
           .catch((error) => {
               console.log("Error:", error );
-              // done();
+              done();
           });
         };
     // Add a switch case statement to handle multiple routes
-    // switch (view) {
-    //   case "Home":
-
-        
-    //     break;
-    //   default:
-    //     done();
-    //     /////////////////////////////
-    //     /////////////////////////////
-    //     // Additional cases as needed
-    //     /////////////////////////////
-    //     /////////////////////////////
-    // }
-  },
+    switch (view) {
+      case "Schedule":
+        axios
+          .get(`http://localhost:4040/bills`)
+          .then(response => {
+            store.Schedule.bills = response.data;
+            done();
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+            done();
+          })
+          axios
+          .get(`http://localhost:4040/incomeSources`)
+          .then(response => {
+            store.Schedule.incomeSources = response.data;
+            done();
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+            done();
+          })
+        break;
+      default:
+        done();
+        // console.log("It puked", error);
+  }
+},
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-    render(store[view]);
+    // render(store[view]);
   }
 });
 
@@ -113,6 +127,7 @@ router.on({
     else{
       console.log(`View ${view} not defined.`);
     }
-  }
-})
+  },
+},
+)
 .resolve();
