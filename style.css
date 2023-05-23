@@ -64,7 +64,7 @@ main{
   min-height: 73vh;
 }
 
-#scheduleDiv{
+#editBillsDiv, #scheduleDiv{
   display: grid;
 }
 
@@ -74,11 +74,23 @@ main{
   width: 85%;
 }
 
-.scheduleTable > thead{
+.editBillsTable{
+  margin: auto;
+  border-collapse: collapse;
+  width: 50%;
+}
+
+.editBillsTable, .scheduleTable > thead{
   border-bottom: 2px solid black;
 }
 
 .scheduleTable > thead > tr > th{
+  border: 1px solid black;
+  padding: 3px;
+  font-size: 14px;
+}
+
+.editBillsTable > thead > tr > th{
   border: 1px solid black;
   padding: 3px;
   font-size: 14px;
@@ -92,8 +104,34 @@ main{
   font-size: 14px;
 }
 
+.editBillsTable > tbody > tr > td{
+  padding-left: 5px;
+  text-align: center;
+  border: 1px solid black;
+  height: 20px;
+  font-size: 14px;
+}
+
 .scheduleTable > tbody > tr > td.billName{
   text-align: left;
+}
+
+.editBillsTable > tbody > tr > td.billName{
+  text-align: left;
+}
+
+#billName{
+  text-align: Left;
+}
+
+#billPaidFrom{
+  text-align: Left;
+  padding-left: 20px;
+}
+
+#billAmount{
+  text-align: right;
+  padding-right: 20px;
 }
 
 #totalsDiv{
