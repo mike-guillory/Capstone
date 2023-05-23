@@ -41,9 +41,6 @@ router.put("/:id", (request, response) => {
     {
       $set:{
         name: body.name,
-        amount: body.amount,
-        frequency: body.frequency,
-        startingDate: body.startingDate
       }
     },
     {

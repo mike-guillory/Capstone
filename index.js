@@ -21,17 +21,32 @@ function render(state = store.Home){
     ${Footer()}
     `;
 
-    afterRender();
+    afterRender(state);
 
     router.updatePageLinks();
 }
 
 // 4. Event Handler function
-function afterRender(){
+function afterRender(state){
 
   document.querySelector(".fa-bars").addEventListener("click", () => {
       document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
+
+
+    if(state === store.Data){
+
+      // TODO /////// I don't want this here ////////////////////////////////
+      const dataList = document.querySelectorAll(".billData");
+
+      dataList.forEach(element => {
+        element.addEventListener("click", () => {
+          let billId = event.target.parentNode.id;
+            console.log(`id = ${billId}`);
+        });
+      });
+      // ///////////////////////////////////////////////////////////////////
+    }
 
   const date = new Date();
   const year = date.getFullYear();
@@ -103,12 +118,44 @@ router.hooks({
           .catch((error) => {
             console.log("Error:", error);
             done();
-          })
+          });
         break;
-      default:
-        done();
-        // console.log("It puked", error);
-  }
+    case "Data":
+      axios
+        .get(`${process.env.BILLS_API_URL}/bills`)
+        .then(response => {
+          store.Data.bills = response.data;
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        })
+        axios
+        .get(`${process.env.BILLS_API_URL}/incomeSources`)
+        .then(response => {
+          store.Data.incomeSources = response.data;
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        })
+        axios
+        .get(`${process.env.BILLS_API_URL}/paymentSources`)
+        .then(response => {
+          store.Data.paymentSources = response.data;
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        })
+      break;
+    default:
+      done();
+      // console.log("It puked", error);
+}
 },
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";

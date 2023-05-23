@@ -1,8 +1,6 @@
 import html from "html-literal";
 import { forEach } from "lodash";
 
-
-
 export default (state) => html`
 ${console.log(state)};
 ${(() => {
@@ -62,14 +60,14 @@ ${(() => {
                     returnHtml += `<td></td>`
                   }
                   }
-                  returnHtml += `</tr><tr>`
+                  returnHtml += `</tr>`
                   rows++;
           });
 
 
           let c = 0;
           for(let i = 10; i > rows; i--){
-            // returnHtml += `<tr>`
+            returnHtml += `<tr>`
             while(c < (columns.length + 2)){
               returnHtml += `<td></td>`;
               c++
