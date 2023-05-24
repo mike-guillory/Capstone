@@ -14,7 +14,7 @@ ${(() => {
     else{
       return 0;
     }
-  });
+  })
 })()}
 <!-- /////////////////////////////////////////////////////////////////// -->
 <!-- NEED TO SORT PAYMENTSOURCES SO THEY SHOW THE SAME ON EVERY SCHEDULE -->
@@ -52,7 +52,7 @@ ${(() => {
                 <td>${bill.dueDate}</td>
                 <td>${bill.name}</td>`
 
-                for(i = 0; i < columns.length; i++){
+                for(let i = 0; i < columns.length; i++){
                   if(bill.paidFrom === columns[i]){
                     returnHtml += `<td>${bill.amount}</td>`
                   }
