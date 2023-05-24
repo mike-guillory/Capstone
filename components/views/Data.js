@@ -51,11 +51,11 @@ ${(() => {
     </table>
   </div>
   <div>
-    <form id="editBillsForm" action="" method="POST">
-      <label for="billName">Name: </label><input name="billName" type="text"><br><br>
-      <label for="dueDate">Due Date: </label><input name="dueDate" type="text"><br><br>
-      <label for="billAmount">Amount: </label><input name="billAmount" type="text"><br><br>
-      <label for="paidFrom">Paid From</label><br><input name="paidFrom" type="text"><br><br>
+    <form id="editBillsForm" action="" method="">
+      <label for="billName">Name: </label><input name="billName" id="billName" type="text"><br><br>
+      <label for="billDueDate">Due Date: </label><input name="dueDate" id="billDueDate" type="text"><br><br>
+      <label for="billAmount">Amount: </label><input name="billAmount" id="billAmount" type="text"><br><br>
+      <label for="billPaidFrom">Paid From</label><br><input name="paidFrom" id="billPaidFrom" type="text"><br><br>
       <input type="submit" value="Add"><input type="submit" value="Update"><input type="submit" value="Delete">
     </form>
   </div>
@@ -72,13 +72,19 @@ ${(() => {
             state.paymentSources.forEach(source => {
 
                 returnHtml += `
-                  <tr><td id="paymentSourceName">${source.name}</td></tr>`
+                  <tr id=${source._id}><td class="paymentSourceData">${source.name}</td></tr>`
 
             });
             return html`${returnHtml}`;
           })()}
         </tbody>
       </table>
+  </div>
+  <div>
+    <form id="editPaymentSourceForm" action="" method="">
+      <label for="paymentSourceName">Name: </label><input name="paymenySourceName" id="paymentSourceName" type="text"><br><br>
+      <input type="submit" value="Add"><input type="submit" value="Update"><input type="submit" value="Delete">
+    </form>
   </div>
   <div id="editIncomeSourcesDiv">
       <table class="editIncomeSourceTable">
@@ -98,10 +104,10 @@ ${(() => {
             state.incomeSources.forEach(source => {
 
                 returnHtml += `
-                  <td id="billName">${source.name}</td>
-                  <td id="billDueDate">${source.amount}</td>
-                  <td id="billAmount">${source.frequency}</td>
-                  <td id="billPaidFrom">${source.startingDate}</td></tr>`
+                  <td id="sourceName">${source.name}</td>
+                  <td id="sourceAmount">${source.amount}</td>
+                  <td id="sourceFrequency">${source.frequency}</td>
+                  <td id="sourceStartingDate">${source.startingDate}</td></tr>`
 
             });
             return html`${returnHtml}`;
@@ -109,6 +115,14 @@ ${(() => {
 
         </tbody>
       </table>
+  </div>
+  <div>
+    <form id="editIncomeSourcesForm" action="" method="">
+      <label for="">Name: </label><input name="" id="" type="text"><br><br>
+      <label for="">Amount: </label><input name="" id="" type="text"><br><br>
+      <label for="">Frequency: </label><input name="" id="" type="text"><br><br>
+      <label for="">Starting Date: </label><input name="" id="" type="text"><br><br>
+    </form>
   </div>
 </main>`;
 

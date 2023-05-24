@@ -21,7 +21,7 @@ ${(() => {
 <!-- /////////////////////////////////////////////////////////////////// -->
 
 
-<main>
+<main onload="addClick()">
   <h2 class="pageHeading" >${state.pageHeading}</h2>
   <div id="scheduleDiv">
     <table class="scheduleTable">
@@ -115,10 +115,7 @@ ${(() => {
       </tr>
       </table>
   </div>
-  <script src="test.js"></script>
 </main>`;
-
-
 
 
 // ${(() => {

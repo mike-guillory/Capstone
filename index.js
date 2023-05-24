@@ -37,12 +37,30 @@ function afterRender(state){
     if(state === store.Data){
 
       // TODO /////// I don't want this here ////////////////////////////////
-      const dataList = document.querySelectorAll(".billData");
+      const billDataList = document.querySelectorAll(".billData");
 
-      dataList.forEach(element => {
+      billDataList.forEach(element => {
         element.addEventListener("click", () => {
-          let billId = event.target.parentNode.id;
-            console.log(`id = ${billId}`);
+          let id = element.parentNode.id;
+          let thisBill = store.Data.bills.filter(bill => bill._id === id);
+
+          document.getElementById("billName").setAttribute("value", thisBill[0].name);
+          document.getElementById("billDueDate").setAttribute("value", thisBill[0].dueDate);
+          document.getElementById("billAmount").setAttribute("value", thisBill[0].amount);
+          document.getElementById("billPaidFrom").setAttribute("value", thisBill[0].paidFrom);
+
+        });
+      });
+
+      const paymentSourceDataList = document.querySelectorAll(".paymentSourceData");
+
+      paymentSourceDataList.forEach(element => {
+        element.addEventListener("click", () => {
+          let id = element.parentNode.id;
+          let thisPaymentSource = store.Data.paymentSources.filter(source => source._id === id);
+
+          document.getElementById("paymentSourceName").setAttribute("value", thisPaymentSource[0].name);
+
         });
       });
       // ///////////////////////////////////////////////////////////////////
