@@ -112,6 +112,10 @@ main{
   font-size: 14px;
 }
 
+#editBillsForm > input{
+  text-align: left;
+}
+
 .scheduleTable > tbody > tr > td.billName{
   text-align: left;
 }
