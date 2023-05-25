@@ -33,10 +33,17 @@ function afterRender(state){
       document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
 
-
     if(state === store.Data){
 
-      // TODO /////// I don't want this here ////////////////////////////////
+      document.querySelector("#payDayForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        console.log(document.querySelector("#incomeSource").value);
+        console.log(document.querySelector("#payDate").value);
+        console.log(document.querySelector("#payDayAmount").value);
+
+      });
+
       const billDataList = document.querySelectorAll(".billData");
 
       billDataList.forEach(element => {
@@ -60,6 +67,21 @@ function afterRender(state){
           let thisPaymentSource = store.Data.paymentSources.filter(source => source._id === id);
 
           document.getElementById("paymentSourceName").setAttribute("value", thisPaymentSource[0].name);
+
+        });
+      });
+
+      const incomeSourceDataList = document.querySelectorAll(".incomeSourceData");
+
+      incomeSourceDataList.forEach(element => {
+        element.addEventListener("click", () => {
+          let id = element.parentNode.id;
+          let thisIncomeSource = store.Data.incomeSources.filter(source => source._id === id);
+
+          document.getElementById("incomeSourceName").setAttribute("value", thisIncomeSource[0].name);
+          document.getElementById("incomeSourceAmount").setAttribute("value", thisIncomeSource[0].amount);
+          document.getElementById("incomeSourceFrequency").setAttribute("value", thisIncomeSource[0].frequency);
+          document.getElementById("incomeSourceStartingDate").setAttribute("value", thisIncomeSource[0].startingDate);
 
         });
       });
@@ -137,6 +159,7 @@ router.hooks({
             console.log("Error:", error);
             done();
           });
+          store.Schedule.columns.splice(0, store.Schedule.columns.length);
         break;
     case "Data":
       axios
