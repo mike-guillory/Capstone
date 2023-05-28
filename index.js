@@ -342,6 +342,16 @@ router.hooks({
             console.log("Error:", error);
             done();
           });
+          axios
+          .get(`${process.env.BILLS_API_URL}/payDays`)
+          .then(response => {
+            store.Schedule.payDays = response.data;
+            done();
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+            done();
+          })
           // Empty columns array
           store.Schedule.columns.splice(0, store.Schedule.columns.length);
       break;

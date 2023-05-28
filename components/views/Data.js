@@ -2,6 +2,13 @@ import html from "html-literal";
 
 export default (state) => html`
 ${(() => {
+
+console.log(state);
+console.log(state.bills);
+console.log(state.payDays);
+console.log(state.paymentSources);
+console.log(state.incomeSources);
+
   state.bills.sort((a, b) => {
     if (a.dueDate < b.dueDate) {
       return -1;
@@ -20,7 +27,7 @@ ${(() => {
     if (a.paySource < b.paySource) {
       return -1;
     }
-    if (a.dueDate > b.dueDate) {
+    if (a.paySource > b.paySource) {
       return 1;
     }
     else{
@@ -45,7 +52,6 @@ ${(() => {
       <tbody>
           ${state.bills
           .map(bill => {
-
               return `
                 <tr id=${bill._id}><td class="billData">${bill.name}</td>
                 <td class="billData">${bill.dueDate}</td>
@@ -89,8 +95,7 @@ ${(() => {
 
         ${state.payDays
         .map(payDay => {
-
-          let payDate = new Date(payDay.date).toISOString().substring(0, 10)
+          let payDate = new Date(payDay.date).toISOString().substring(0, 10);
 
           return `
             <tr id=${payDay._id}><td class="payDayData">${payDay.paySource}</td>
@@ -131,9 +136,7 @@ ${(() => {
      <tbody>
       ${state.paymentSources
       .map(source => {
-
         return `<tr id=${source._id}><td class="paymentSourceData">${source.name}</td></tr>`
-
       })}
      </tbody>
     </table>
@@ -161,7 +164,6 @@ ${(() => {
      <tbody>
       ${state.incomeSources
       .map(source  => {
-
          return `
           <tr id=${source._id}><td class="incomeSourceData">${source.name}</td>
           <td class="incomeSourceData">${source.amount}</td>`
@@ -189,3 +191,6 @@ ${(() => {
 
 
 // https://www.w3docs.com/snippets/html/how-to-create-a-table-with-a-fixed-header-and-scrollable-body.html
+
+
+

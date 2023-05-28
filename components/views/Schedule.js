@@ -3,26 +3,32 @@ import html from "html-literal";
 
 export default (state) => html`
 
-${console.log(state)}
-
 ${(() => {
-  state.bills.sort((a, b) => {
-      if (a.dueDate < b.dueDate) {
-        return -1;
-      }
-      else if (a.dueDate > b.dueDate) {
-        return 1;
-      }
-      else{
-        return 0;
-      }
+
+  let today = new Date();
+
+  state.payDays.forEach(element => {
+
+    let payDayMonth = element.date.substring(6, 7);
+
+    if(payDayMonth >= today.getMonth() + 1
+          && payDayMonth < payDayMonth +1 ){
+      console.log(payDayMonth);
+    }
+  });
+
+  state.payDays.sort((a, b) => {
+    if (a.date < b.date) {
+      return -1;
+    }
+    if (a.date > b.date) {
+      return 1;
+    }
+    else{
+      return 0;
+    }
   })
 })()}
-
-<!-- /////////////////////////////////////////////////////////////////// -->
-<!-- NEED TO SORT PAYMENTSOURCES SO THEY SHOW THE SAME ON EVERY SCHEDULE -->
-<!-- /////////////////////////////////////////////////////////////////// -->
-
 
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
@@ -32,6 +38,20 @@ ${(() => {
         <tr>
           <th>Due Date</th>
           <th>Bill</th>
+
+          ${(() => {
+            state.bills.sort((a, b) => {
+              if (a.paidFrom < b.paidFrom) {
+              return -1;
+              }
+              else if (a.paidFrom > b.paidFrom) {
+                return 1;
+              }
+              else{
+              return 0;
+              }
+            })
+          })()}
 
           ${state.bills
           .map(bill => {
@@ -46,6 +66,20 @@ ${(() => {
       </thead>
       <tbody>
         <tr>
+
+        ${(() => {
+        state.bills.sort((a, b) => {
+            if (a.dueDate < b.dueDate) {
+              return -1;
+            }
+            else if (a.dueDate > b.dueDate) {
+              return 1;
+            }
+            else{
+              return 0;
+            }
+          })
+        })()}
           ${state.bills
           .map(bill => {
 
