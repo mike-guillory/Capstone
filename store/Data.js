@@ -1,7 +1,8 @@
 export default{
-  pageHeading: "Edit Bills, Income and Payment Sources",
+  pageHeading: "Add, Update, and Delete",
   view: "Data",
   bills: [],
   incomeSources: [],
-  paymentSources: []
+  paymentSources: [],
+  payDays: []
 };

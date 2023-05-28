@@ -33,65 +33,248 @@ function afterRender(state){
       document.querySelector("nav > ul").classList.toggle("hidden--mobile");
     });
 
-    if(state === store.Data){
+  // IF DATA PAGE //////////////////////////////////////////////////
+  if(state === store.Data){
 
-      document.querySelector("#payDayForm").addEventListener("submit", event => {
-        event.preventDefault();
+    function setSeletedInList(id, valueToSelect) {
+      let element = document.getElementById(id);
+      element.value = valueToSelect;
+     };
 
-        console.log(document.querySelector("#incomeSource").value);
-        console.log(document.querySelector("#payDate").value);
-        console.log(document.querySelector("#payDayAmount").value);
+    // Populate Edit Bills Form with values of Bill clicked in Edit Bills Table /////////////
+    const billDataList = document.querySelectorAll(".billData");
+
+    billDataList.forEach(element => {
+      element.addEventListener("click", () => {
+        let id = element.parentNode.id;
+        let thisBill = store.Data.bills.filter(bill => bill._id === id);
+
+        document.getElementById("billId").setAttribute("value", id);
+        document.getElementById("billName").setAttribute("value", thisBill[0].name);
+        document.getElementById("billDueDate").setAttribute("value", thisBill[0].dueDate);
+        document.getElementById("billAmount").setAttribute("value", thisBill[0].amount);
+        document.getElementById("billPaidFrom").setAttribute("value", thisBill[0].paidFrom);
+
+        setSeletedInList("billPaidFrom", thisBill[0].paidFrom);
 
       });
+    });
 
-      const billDataList = document.querySelectorAll(".billData");
+    // Set value of billPaidFrom Select List when item selected in list
+    document.getElementById("billPaidFrom").addEventListener("change", (Event) => {
 
-      billDataList.forEach(element => {
-        element.addEventListener("click", () => {
-          let id = element.parentNode.id;
-          let thisBill = store.Data.bills.filter(bill => bill._id === id);
+      document.getElementById("billPaidFrom").setAttribute("value", Event.target.value);
 
-          document.getElementById("billName").setAttribute("value", thisBill[0].name);
-          document.getElementById("billDueDate").setAttribute("value", thisBill[0].dueDate);
-          document.getElementById("billAmount").setAttribute("value", thisBill[0].amount);
-          document.getElementById("billPaidFrom").setAttribute("value", thisBill[0].paidFrom);
+    });
+    // ///////////////////////////////////////////////////////////////////////////////////////
 
+    // Populate Edit Paydays Form with values of PayDay clicked in Edit Paydays Table ////////
+    const payDayDataList = document.querySelectorAll(".payDayData");
+
+    payDayDataList.forEach(element => {
+      element.addEventListener("click", () => {
+
+      let id = element.parentNode.id;
+
+      let thisPayDay = store.Data.payDays.filter(day => day._id === id);
+
+      let payDate = new Date(thisPayDay[0].date).toISOString().substring(0, 10);
+
+      document.getElementById("payDayId").setAttribute("value", id);
+      document.getElementById("incomeSource").setAttribute("value", thisPayDay[0].paySource);
+      document.getElementById("payDate").setAttribute("value", payDate);
+      document.getElementById("payDayAmount").setAttribute("value", thisPayDay[0].amount);
+
+      setSeletedInList("incomeSource", thisPayDay[0].paySource);
+
+      });
+    });
+
+    // Set value of billPaidFrom Select List when item selected in list
+    document.getElementById("incomeSource").addEventListener("change", (Event) => {
+       document.getElementById("incomeSource").setAttribute("value", Event.target.value);
+
+    });
+
+   // Populate Edit Payment Source Form with values of Payment Source clicked in Edit Payment Sources Table ////////
+   const paymentSourceDataList = document.querySelectorAll(".paymentSourceData");
+
+   paymentSourceDataList.forEach(element => {
+     element.addEventListener("click", () => {
+       let id = element.parentNode.id;
+       let thisPaymentSource = store.Data.paymentSources.filter(source => source._id === id);
+
+       document.getElementById("paymentSourceId").setAttribute("value", id);
+       document.getElementById("paymentSourceName").setAttribute("value", thisPaymentSource[0].name);
+
+     });
+   });
+
+   // Populate Edit Income Source Form with values of Income Source clicked in Edit Income Sources Table ////////
+   const incomeSourceDataList = document.querySelectorAll(".incomeSourceData");
+
+   incomeSourceDataList.forEach(element => {
+     element.addEventListener("click", () => {
+       let id = element.parentNode.id;
+       let thisIncomeSource = store.Data.incomeSources.filter(source => source._id === id);
+
+       document.getElementById("incomeSourceId").setAttribute("value", id);
+       document.getElementById("incomeSourceName").setAttribute("value", thisIncomeSource[0].name);
+       document.getElementById("incomeSourceAmount").setAttribute("value", thisIncomeSource[0].amount);
+      //  document.getElementById("incomeSourceFrequency").setAttribute("value", thisIncomeSource[0].frequency);
+      //  document.getElementById("incomeSourceStartingDate").setAttribute("value", thisIncomeSource[0].startingDate);
+
+     });
+   });
+ }
+
+    // Add, Update, Delete ////////////////////////////////////////////////////////////////
+    const buttons = Array.from(document.getElementsByClassName("button"));
+
+    buttons.forEach(element => {
+      element.addEventListener("click", () => {
+
+      if(element.parentNode.id === "editBillsForm"){
+
+        switch(element.value){
+          case "Add":
+
+            inputList = element.parentNode.elements;
+
+            const requestData = {
+              name: inputList.billName.value,
+              amount: inputList.billAmount.value,
+              dueDate: inputList.billDueDate.value,
+              paidFrom: inputList.billPaidFrom.value
+            }
+
+            addData("bills", requestData);
+
+          break;
+          case "Update":
+
+          break;
+          case "Delete":
+
+            let id = element.parentNode.firstElementChild.value;
+            deleteData("bills", id);
+
+          break;
+        default:
+        };
+      };
+
+      if(element.parentNode.id === "EditPayDaysForm"){
+        switch(element.value){
+          case "Add":
+
+          inputList = element.parentNode.elements;
+
+          const requestData = {
+            paySource: inputList.incomeSource.value,
+            amount: inputList.payDayAmount.value,
+            date: inputList.payDate.value
+          }
+
+          addData("payDays", requestData);
+
+          break;
+          case "Update":
+
+          break;
+          case "Delete":
+
+            let id = element.parentNode.firstElementChild.value;
+            deleteData("payDays", id);
+
+          break;
+        default:
+        };
+      };
+
+      if(element.parentNode.id === "editPaymentSourcesForm"){
+        switch(element.value){
+          case "Add":
+
+          inputList = element.parentNode.elements;
+
+          const requestData = {
+            name: inputList.paymentSourceName.value
+          }
+
+          addData("paymentSources", requestData);
+
+          break;
+          case "Update":
+
+          break;
+          case "Delete":
+
+            let id = element.parentNode.firstElementChild.value;
+            deleteData("paymentSources", id);
+
+          break;
+        default:
+        };
+      };
+      if(element.parentNode.id === "editIncomeSourcesForm"){
+        switch(element.value){
+          case "Add":
+
+          inputList = element.parentNode.elements;
+
+          const requestData = {
+            name: inputList.incomeSourceName.value,
+            amount: inputList.incomeSourceAmount.value
+          }
+
+          addData("incomeSources", requestData);
+
+          break;
+          case "Update":
+
+          break;
+          case "Delete":
+
+            let id = element.parentNode.firstElementChild.value;
+            deleteData("incomeSources", id);
+
+          break;
+        default:
+        };
+      };
+
+      function addData(data, requestData){
+        axios
+        .post(`${process.env.BILLS_API_URL}/${data}`, requestData)
+        .then(response => {
+          window.location.reload();
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
         });
-      });
+      }
 
-      const paymentSourceDataList = document.querySelectorAll(".paymentSourceData");
+      function deleteData(data, id){
+        axios
+          .delete(`${process.env.BILLS_API_URL}/${data}/${id}`)
+          .then(response => {
+            window.location.reload();
+            done();
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+            done();
+          });
+      };
 
-      paymentSourceDataList.forEach(element => {
-        element.addEventListener("click", () => {
-          let id = element.parentNode.id;
-          let thisPaymentSource = store.Data.paymentSources.filter(source => source._id === id);
-
-          document.getElementById("paymentSourceName").setAttribute("value", thisPaymentSource[0].name);
-
-        });
-      });
-
-      const incomeSourceDataList = document.querySelectorAll(".incomeSourceData");
-
-      incomeSourceDataList.forEach(element => {
-        element.addEventListener("click", () => {
-          let id = element.parentNode.id;
-          let thisIncomeSource = store.Data.incomeSources.filter(source => source._id === id);
-
-          document.getElementById("incomeSourceName").setAttribute("value", thisIncomeSource[0].name);
-          document.getElementById("incomeSourceAmount").setAttribute("value", thisIncomeSource[0].amount);
-          document.getElementById("incomeSourceFrequency").setAttribute("value", thisIncomeSource[0].frequency);
-          document.getElementById("incomeSourceStartingDate").setAttribute("value", thisIncomeSource[0].startingDate);
-
-        });
-      });
-      // ///////////////////////////////////////////////////////////////////
-    }
+    })});
 
   const date = new Date();
   const year = date.getFullYear();
   document.getElementById("date").innerHTML = year;
-  // console.log(document.querySelector("thead > tr > th").nextElementSibling.innerHTML);
 }
 
 // 5. Router.hooks
@@ -159,8 +342,9 @@ router.hooks({
             console.log("Error:", error);
             done();
           });
+          // Empty columns array
           store.Schedule.columns.splice(0, store.Schedule.columns.length);
-        break;
+      break;
     case "Data":
       axios
         .get(`${process.env.BILLS_API_URL}/bills`)
@@ -186,6 +370,16 @@ router.hooks({
         .get(`${process.env.BILLS_API_URL}/paymentSources`)
         .then(response => {
           store.Data.paymentSources = response.data;
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        })
+        axios
+        .get(`${process.env.BILLS_API_URL}/payDays`)
+        .then(response => {
+          store.Data.payDays = response.data;
           done();
         })
         .catch((error) => {

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bills = require("./routers/bills");
 const incomeSources = require("./routers/incomeSources");
 const paymentSources = require("./routers/paymentSources");
+const payDays = require("./routers/payDays");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use(express.json());
 app.use("/bills", bills);
 app.use("/incomeSources", incomeSources);
 app.use("/paymentSources", paymentSources);
+app.use("/payDays", payDays);
 
 const APP_PORT = process.env.APP_PORT || 4040;
 app.listen(APP_PORT, () => console.log(`Listening on port ${APP_PORT}`));

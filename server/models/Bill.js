@@ -17,7 +17,7 @@ const billSchema = new mongoose.Schema({
   },
 
   dueDate:{
-    type: Date,
+    type: Number,
     required: true
   },
 

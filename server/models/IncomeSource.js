@@ -11,16 +11,16 @@ const incomeSourceSchema = new mongoose.Schema({
     required: true
   },
 
-  frequency:{
-    type: String,
-    required: true,
-    enum: ["Weekly", "Bi-Weekly", "Monthly"]
-  },
+  // frequency:{
+  //   type: String,
+  //   required: true,
+  //   enum: ["Weekly", "Bi-Weekly", "Monthly"]
+  // },
 
-  startingDate:{
-    type: Date,
-    required: true
-  }
+  // startingDate:{
+  //   type: Date,
+  //   required: true
+  // }
 });
 
 const IncomeSource = mongoose.model("IncomeSource", incomeSourceSchema);
