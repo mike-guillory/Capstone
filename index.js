@@ -139,7 +139,7 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-            inputList = element.parentNode.elements;
+            const inputList = element.parentNode.elements;
 
             const requestData = {
               name: inputList.billName.value,
@@ -168,7 +168,7 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-          inputList = element.parentNode.elements;
+          const inputList = element.parentNode.elements;
 
           const requestData = {
             paySource: inputList.incomeSource.value,
@@ -196,7 +196,7 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-          inputList = element.parentNode.elements;
+          const inputList = element.parentNode.elements;
 
           const requestData = {
             name: inputList.paymentSourceName.value
@@ -221,7 +221,7 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-          inputList = element.parentNode.elements;
+          const inputList = element.parentNode.elements;
 
           const requestData = {
             name: inputList.incomeSourceName.value,
