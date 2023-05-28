@@ -3,6 +3,7 @@ export default{
   view: "Schedule",
   bills: [],
   incomeSources: [],
+  payDays: [],
   rows: 0,
   columns: []
 };
