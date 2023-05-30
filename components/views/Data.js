@@ -2,13 +2,6 @@ import html from "html-literal";
 
 export default (state) => html`
 ${(() => {
-
-console.log(state);
-console.log(state.bills);
-console.log(state.payDays);
-console.log(state.paymentSources);
-console.log(state.incomeSources);
-
   state.bills.sort((a, b) => {
     if (a.dueDate < b.dueDate) {
       return -1;
@@ -24,10 +17,10 @@ console.log(state.incomeSources);
 
 ${(() => {
   state.payDays.sort((a, b) => {
-    if (a.paySource < b.paySource) {
+    if (a.date < b.date) {
       return -1;
     }
-    if (a.paySource > b.paySource) {
+    if (a.date > b.date) {
       return 1;
     }
     else{
@@ -106,7 +99,6 @@ ${(() => {
 
       </tbody>
     </table>
-    <p>FIX CALANDER NOT UPDATEING VALUE ON CHANGE</p>
     <form id="EditPayDaysForm" class="editForm" action="" method="">
     <input type="hidden" id="payDayId">
       <label for="incomeSource">Income Source:</label>
