@@ -106,6 +106,7 @@ ${(() => {
 
       </tbody>
     </table>
+    <p>FIX CALANDER NOT UPDATEING VALUE ON CHANGE</p>
     <form id="EditPayDaysForm" class="editForm" action="" method="">
     <input type="hidden" id="payDayId">
       <label for="incomeSource">Income Source:</label>

@@ -55,7 +55,7 @@ function afterRender(state){
         document.getElementById("billAmount").setAttribute("value", thisBill[0].amount);
         document.getElementById("billPaidFrom").setAttribute("value", thisBill[0].paidFrom);
 
-        setSeletedInList("billPaidFrom", thisBill[0].paidFrom);
+        // setSeletedInList("billPaidFrom", thisBill[0].paidFrom);
 
       });
     });

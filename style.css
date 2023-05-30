@@ -197,8 +197,13 @@ main{
 
 /* ///////////////////////////////////////////////////////////////// */
 
-#scheduleDiv{
+.scheduleDiv{
 
+}
+
+.scheduleDiv > h3{
+  padding-left: 140px;
+  margin-bottom: 5px;
 }
 
 .scheduleTable{
@@ -243,7 +248,7 @@ main{
   padding-right: 20px;
 }
 
-#totalsDiv{
+.totalsDiv{
   display: grid;
   grid-template-columns: 167px 167px 167px 167px 167px 167px;
 }
@@ -427,7 +432,7 @@ font-size: 10px;
     font-size: 10px;
   }
 
-  #totalsDiv{
+  .totalsDiv{
     display: block;
   }
 
