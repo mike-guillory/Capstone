@@ -45,71 +45,54 @@ ${(() => {
   state["uniquePayPeriods"] = uniquePayPeriods;
 
   const schedule = [];
-  // let thisPayPeriod = [];
   let billCounter = 0;
-  let monthCounter = 0;
+  let monthValue = 100;
+  let lastDueDate = 0;
 
-  //////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////
-
-  for(let i = 0; i < uniquePayDates.length; i++){
-
-    if(uniquePayPeriods[i].substring(6, 7) > monthCounter){
-      billCounter = 0;
-    }
-
-    console.log(`payday ${i}`)
+  for(let i = 0; i < uniquePayPeriods.length; i++){
 
     let thisPayPeriod = [];
 
-    let varI = i;
     let year = uniquePayPeriods[i].substring(0, 4);
     let month = uniquePayPeriods[i].substring(6, 7);
-    monthCounter = month;
     let fullDueDate = "";
 
-    // console.log(month + " " + year)
-
-    // Convert the bill due date into an epoc date
     for(let ii = billCounter; ii < state.bills.length; ii++){
-      // console.log(`bill ${ii}`)
+
+
       fullDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
-      // t = new Date(year, (month - 1), state.bills[ii].dueDate)
-      // console.log(t)
 
-      console.log(fullDueDate)
-      console.log(uniquePayDates[varI])
-      console.log(uniquePayDates[varI + 1])
+      if(fullDueDate >= uniquePayDates[i] && !(fullDueDate >= uniquePayDates[i + 1])){
 
-      if(fullDueDate >= uniquePayDates[varI] && !(fullDueDate >= uniquePayDates[varI + 1])){
-        console.log("yes")
-          thisPayPeriod.push(state.bills[ii]);
-        }
-        else{
-          console.log("no")
-          billCounter = ii;
+        thisPayPeriod.push(state.bills[ii]);
+        lastDueDate = state.bills[ii].dueDate;
+
+        if(!(ii < state.bills.length - 1)){
           schedule.push(thisPayPeriod);
-          break;
-        };
-    };/////////////////////////////////////////////////////////////////////////////
-  };///////////////////////////////////////////////////////////////////////////////////////
+          billCounter = 0;
+        }
+      }
+      else{
+        billCounter = ii;
+        schedule.push(thisPayPeriod);
+        break;
+      };
+    };
+  };
 
   state["schedule"] = schedule;
   state["index"] = 0;
-  console.log(schedule)
 
 })()}
-
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
   ${state.schedule
   .map(period => {
     state.index++;
-    // console.log(period)
     state.columns.splice(0, state.columns.length);
       return `
     <div class="scheduleDiv">
-    <h3>Pay Date: ${state.uniquePayPeriods[state.index - 1].substring(5, 10)}</h3>
+      <h3>Pay Date: ${state.uniquePayPeriods[state.index - 1].substring(5, 10)}</h3>
       <table class="scheduleTable">
       <thead>
           <tr>
@@ -122,7 +105,6 @@ ${(() => {
                       return `<th>${pay.paidFrom}</th>`;
                   }
             })}
-
         </tr>
       </thead>
       <tbody>
@@ -148,7 +130,7 @@ ${(() => {
                 // state.rows++;
                 return returnHtml;
           })}
-          <!-- add empty rows -->
+          <!-- add an empty row -->
           ${(() => {
 
             let returnHtml = "";
@@ -171,7 +153,6 @@ ${(() => {
     </table>
     </div>
     </div>`
-    // console.log(period)
   })}
   </main>`;
 
