@@ -1,9 +1,7 @@
-import { stat } from "fs";
 import html from "html-literal";
-import { scheduler } from "timers/promises";
+import { uniq } from "lodash";
 
 export default (state) => html`
-
 ${(() => {
 
   state.payDays.sort((a, b) => {
@@ -51,8 +49,20 @@ ${(() => {
 
   for(let i = 0; i < uniquePayPeriods.length; i++){
 
-    let thisPayPeriod = [];
+    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    let payTotal = 0;
+    let payTotals = state.payDays.map(payday => {
 
+        if(payday.date.substring(0, 10) === uniquePayPeriods[i]){
+
+          payTotal += payday.amount;
+        }
+    })
+    state.payTotal = payTotal;
+    let thisPayPeriod = [];
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     let year = uniquePayPeriods[i].substring(0, 4);
     let month = uniquePayPeriods[i].substring(6, 7);
     let fullDueDate = "";
@@ -90,7 +100,7 @@ ${(() => {
   .map(period => {
     state.index++;
     state.columns.splice(0, state.columns.length);
-      return `
+      return html`
     <div class="scheduleDiv">
       <h3>Pay Date: ${state.uniquePayPeriods[state.index - 1].substring(5, 10)}</h3>
       <table class="scheduleTable">
@@ -102,7 +112,7 @@ ${(() => {
                 .map(pay => {
                   if(!state.columns.includes(pay.paidFrom)){
                       state.columns.push(pay.paidFrom);
-                      return `<th>${pay.paidFrom}</th>`;
+                      return html `<th>${pay.paidFrom}</th>`;
                   }
             })}
         </tr>
@@ -120,7 +130,7 @@ ${(() => {
 
                 for(let i = 0; i < state.columns.length; i++){
                     if(pay.paidFrom === state.columns[i]){
-                      returnHtml += `<td>$${pay.amount}</td>`;
+                      returnHtml += `<td>${pay.amount}</td>`;
                     }
                     else{
                       returnHtml += `<td></td>`;
@@ -152,7 +162,7 @@ ${(() => {
       </tbody>
     </table>
     </div>
-    </div>`
-  })}
+    </div>
+  `})}
   </main>`;
 
