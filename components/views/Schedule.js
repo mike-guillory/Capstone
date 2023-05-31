@@ -108,6 +108,19 @@ ${(() => {
           <tr>
             <th>Due Date</th>
             <th>Bill</th>
+            ${(() => {
+            period.sort((a, b) => {
+              if (a.paidFrom < b.paidFrom) {
+              return -1;
+              }
+              else if (a.paidFrom > b.paidFrom) {
+                return 1;
+              }
+              else{
+              return 0;
+              }
+            })
+          })()}
             ${period
                 .map(pay => {
                   if(!state.columns.includes(pay.paidFrom)){
