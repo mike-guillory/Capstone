@@ -192,7 +192,7 @@ function afterRender(state){
 
           break;
           case "Update":
-yd
+
             const updatedPayDay = element.parentNode.elements;
             let payId = element.parentNode.firstElementChild.value;
 
@@ -295,36 +295,31 @@ yd
         .post(`${process.env.BILLS_API_URL}/${data}`, requestData)
         .then(response => {
           window.location.reload();
-          done();
         })
         .catch((error) => {
           console.log("Error:", error);
-          done();
         });
-      }
+      };
 
       function updateData(data, id, requestData){
         axios
         .put(`${process.env.BILLS_API_URL}/${data}/${id}`, requestData)
         .then(response => {
           window.location.reload();
-          done();
         })
         .catch((error) => {
           console.log("Error:", error);
-          done();
         });
       };
+
       function deleteData(data, id){
         axios
           .delete(`${process.env.BILLS_API_URL}/${data}/${id}`)
           .then(response => {
             window.location.reload();
-            done();
           })
           .catch((error) => {
             console.log("Error:", error);
-            done();
           });
       };
 
