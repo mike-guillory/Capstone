@@ -55,7 +55,7 @@ function afterRender(state){
         document.getElementById("billAmount").setAttribute("value", thisBill[0].amount);
         document.getElementById("billPaidFrom").setAttribute("value", thisBill[0].paidFrom);
 
-        // setSeletedInList("billPaidFrom", thisBill[0].paidFrom);
+        setSeletedInList("billPaidFrom", thisBill[0].paidFrom);
 
       });
     });
@@ -139,19 +139,31 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-            const inputList = element.parentNode.elements;
+            const addBill = element.parentNode.elements;
 
-            const requestData = {
-              name: inputList.billName.value,
-              amount: inputList.billAmount.value,
-              dueDate: inputList.billDueDate.value,
-              paidFrom: inputList.billPaidFrom.value
+            const addBillData = {
+              name: addBill.billName.value,
+              amount: addBill.billAmount.value,
+              dueDate: addBill.billDueDate.value,
+              paidFrom: addBill.billPaidFrom.value
             }
 
-            addData("bills", requestData);
+            addData("bills", addBillData);
 
           break;
           case "Update":
+
+            const updateBill = element.parentNode.elements;
+            let billId = element.parentNode.firstElementChild.value;
+
+            const billData = {
+              name: updateBill.billName.value,
+              amount: updateBill.billAmount.value,
+              dueDate: updateBill.billDueDate.value,
+              paidFrom: updateBill.billPaidFrom.value,
+            }
+
+            updateData("bills", billId, billData)
 
           break;
           case "Delete":
@@ -180,12 +192,25 @@ function afterRender(state){
 
           break;
           case "Update":
+yd
+            const updatedPayDay = element.parentNode.elements;
+            let payId = element.parentNode.firstElementChild.value;
+
+            const payData = {
+              paySource: updatedPayDay.incomeSource.value,
+              amount: updatedPayDay.payDayAmount.value,
+              date: updatedPayDay.payDate.value
+            }
+
+            alert(updatedPayDay.payDate.value)
+
+            updateData("payDays", payId, payData)
 
           break;
           case "Delete":
 
-            let id = element.parentNode.firstElementChild.value;
-            deleteData("payDays", id);
+            let payDayId = element.parentNode.firstElementChild.value;
+            deleteData("payDays", payDayId);
 
           break;
         default:
@@ -207,6 +232,15 @@ function afterRender(state){
           break;
           case "Update":
 
+            const updatedPaymentSources = element.parentNode.elements;
+            let paymentSourceId = element.parentNode.firstElementChild.value;
+
+            const PaymentSourcesData = {
+              name:  updatedPaymentSources.paymentSourceName.value
+            }
+
+            updateData("paymentSources", paymentSourceId, PaymentSourcesData)
+
           break;
           case "Delete":
 
@@ -221,17 +255,29 @@ function afterRender(state){
         switch(element.value){
           case "Add":
 
-          const inputList = element.parentNode.elements;
+            const inputList = element.parentNode.elements;
 
-          const requestData = {
-            name: inputList.incomeSourceName.value,
-            amount: inputList.incomeSourceAmount.value
-          }
+            const requestData = {
+              name: inputList.incomeSourceName.value,
+              amount: inputList.incomeSourceAmount.value
+            }
 
-          addData("incomeSources", requestData);
+            addData("incomeSources", requestData);
 
           break;
           case "Update":
+
+            console.log(element.parentNode.elements);
+            const updatedIncomeSources = element.parentNode.elements;
+            let incomeSourceId = element.parentNode.firstElementChild.value;
+
+            const PaymentSourcesData = {
+              name:  updatedIncomeSources.incomeSourceName.value,
+              amount:  updatedIncomeSources.incomeSourceAmount.value
+            }
+
+            updateData("incomeSources", incomeSourceId, PaymentSourcesData)
+
 
           break;
           case "Delete":
@@ -257,6 +303,18 @@ function afterRender(state){
         });
       }
 
+      function updateData(data, id, requestData){
+        axios
+        .put(`${process.env.BILLS_API_URL}/${data}/${id}`, requestData)
+        .then(response => {
+          window.location.reload();
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        });
+      };
       function deleteData(data, id){
         axios
           .delete(`${process.env.BILLS_API_URL}/${data}/${id}`)
@@ -322,89 +380,56 @@ router.hooks({
     // Add a switch case statement to handle multiple routes
     switch (view) {
       case "Schedule":
-        axios
-          .get(`${process.env.BILLS_API_URL}/bills`)
-          .then(response => {
-            store.Schedule.bills = response.data;
-            done();
-          })
-          .catch((error) => {
-            console.log("Error:", error);
-            done();
-          })
-          axios
-          .get(`${process.env.BILLS_API_URL}/incomeSources`)
-          .then(response => {
-            store.Schedule.incomeSources = response.data;
+        Promise.allSettled([
+          axios.get(`${process.env.BILLS_API_URL}/bills`),
+          axios.get(`${process.env.BILLS_API_URL}/incomeSources`),
+          axios.get(`${process.env.BILLS_API_URL}/payDays`)
+        ])
+          .then(responses => {
+            const [bills, incomeSources, payDays] = responses;
+            store.Schedule.bills = bills.value.data;
+            store.Schedule.incomeSources = incomeSources.value.data;
+            store.Schedule.payDays = payDays.value.data;
+
+            // Empty columns array
+            store.Schedule.columns.splice(0, store.Schedule.columns.length);
+
             done();
           })
           .catch((error) => {
             console.log("Error:", error);
             done();
           });
-          axios
-          .get(`${process.env.BILLS_API_URL}/payDays`)
-          .then(response => {
-            store.Schedule.payDays = response.data;
+        break;
+      case "Data":
+        Promise.allSettled([
+          axios.get(`${process.env.BILLS_API_URL}/bills`),
+          axios.get(`${process.env.BILLS_API_URL}/incomeSources`),
+          axios.get(`${process.env.BILLS_API_URL}/paymentSources`),
+          axios.get(`${process.env.BILLS_API_URL}/payDays`)
+        ])
+
+          .then(responses => {
+            const [bills, incomeSources, paymentSources, payDays] = responses;
+            store.Data.bills = bills.value.data;
+            store.Data.incomeSources = incomeSources.value.data;
+            store.Data.paymentSources = paymentSources.value.data;
+            store.Data.payDays = payDays.value.data;
+
             done();
           })
           .catch((error) => {
             console.log("Error:", error);
             done();
-          })
-          // Empty columns array
-          store.Schedule.columns.splice(0, store.Schedule.columns.length);
-      break;
-    case "Data":
-      axios
-        .get(`${process.env.BILLS_API_URL}/bills`)
-        .then(response => {
-          store.Data.bills = response.data;
-          done();
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-          done();
-        })
-        axios
-        .get(`${process.env.BILLS_API_URL}/incomeSources`)
-        .then(response => {
-          store.Data.incomeSources = response.data;
-          done();
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-          done();
-        })
-        axios
-        .get(`${process.env.BILLS_API_URL}/paymentSources`)
-        .then(response => {
-          store.Data.paymentSources = response.data;
-          done();
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-          done();
-        })
-        axios
-        .get(`${process.env.BILLS_API_URL}/payDays`)
-        .then(response => {
-          store.Data.payDays = response.data;
-          done();
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-          done();
-        })
-      break;
-    default:
+          });
+        break;
+      default:
       done();
-      // console.log("It puked", error);
-}
+    }
 },
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-    // render(store[view]);
+    render(store[view]);
   }
 });
 

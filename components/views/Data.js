@@ -45,7 +45,7 @@ ${(() => {
       <tbody>
           ${state.bills
           .map(bill => {
-              return `
+              return html`
                 <tr id=${bill._id}><td class="billData">${bill.name}</td>
                 <td class="billData">${bill.dueDate}</td>
                 <td class="billData">${bill.amount}</td>
@@ -66,7 +66,7 @@ ${(() => {
             <option></option>
             ${state.paymentSources
             .map(source => {
-              return `<option value="${source.name}">${source.name}</option>`
+              return html`<option value="${source.name}">${source.name}</option>`
             })}
           </select><br><br>
       <input type="button" class="button" name="billAdd" value="Add">
@@ -89,11 +89,11 @@ ${(() => {
         ${state.payDays
         .map(payDay => {
           let payDate = new Date(payDay.date).toISOString().substring(0, 10);
-
-          return `
+          return html`
             <tr id=${payDay._id}><td class="payDayData">${payDay.paySource}</td>
-            <td class="payDayData">${payDay.amount}</td>
-            <td class="payDayData">${payDate}</td></tr>`
+            <td id="amount" class="payDayData">${payDay.amount}</td>
+            <td id="date" class="payDayData">${payDate}</td></tr>`
+
 
         })}
 
@@ -106,7 +106,7 @@ ${(() => {
             <option selected></option>
             ${state.incomeSources
             .map(source => {
-              return `<option value="${source.name}">${source.name}</option>`
+              return html`<option value="${source.name}">${source.name}</option>`
             })}
           </select><br><br>
       <label for="payDate"></label>
@@ -129,7 +129,7 @@ ${(() => {
      <tbody>
       ${state.paymentSources
       .map(source => {
-        return `<tr id=${source._id}><td class="paymentSourceData">${source.name}</td></tr>`
+        return html`<tr id=${source._id}><td class="paymentSourceData">${source.name}</td></tr>`
       })}
      </tbody>
     </table>
@@ -157,7 +157,7 @@ ${(() => {
      <tbody>
       ${state.incomeSources
       .map(source  => {
-         return `
+         return html`
           <tr id=${source._id}><td class="incomeSourceData">${source.name}</td>
           <td class="incomeSourceData">${source.amount}</td>`
           // <td class="incomeSourceData">${source.frequency}</td>
