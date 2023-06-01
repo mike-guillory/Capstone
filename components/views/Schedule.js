@@ -45,12 +45,13 @@ ${(() => {
   const schedule = [];
   let billCounter = 0;
   let monthValue = 100;
-  let lastDueDate = 0;
+  // let lastDueDate = 0;
 
 
   // For each pay period
   for(let i = 0; i < uniquePayPeriods.length; i++){
 
+    // console.log(`This pay period: ${uniquePayDates[i]}`)
 
     let payTotal = 0;
     // Get the total pay even if there is more
@@ -67,42 +68,52 @@ ${(() => {
     let thisPayPeriod = [];
     let year = uniquePayPeriods[i].substring(0, 4);
     let month = uniquePayPeriods[i].substring(6, 7);
-    let fullDueDate = "";
+    let thisBillsDueDate = 0;
     let billTotal = 0;
 
 
     // For every bill that falls between this payday and the next
     for(let ii = billCounter; ii < state.bills.length; ii++){
 
+      // console.log(state.bills[ii].name)
 
-      fullDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
+      thisBillsDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
+      let thisPayDate = uniquePayDates[i];
+      let nextPayDate = uniquePayDates[i + 1];
+      // console.log(`This next pay date: ${nextPayDate}`)
 
       // If the bill does fall into this pay period
-      if(fullDueDate >= uniquePayDates[i] && !(fullDueDate >= uniquePayDates[i + 1])){
+      if(thisBillsDueDate >= thisPayDate && (thisBillsDueDate < nextPayDate || nextPayDate === undefined)){
+          //  Jul 6    >=   Jun 30    AND    Jul 6  < Jul 6
+        // console.log(`This pay date: ${uniquePayDates[i]}`)
+        // console.log(`This Bill's due Date: ${thisBillsDueDate}`)
+        // console.log(`This next pay date: ${nextPayDate}`)
 
         // Push this bill onto this pay period
         thisPayPeriod.push(state.bills[ii]);
-        // Record this bill as the last bill pushed
-        // so the next itteration will start with the
-        // next bill
-        lastDueDate = state.bills[ii].dueDate;
+
         billTotal += state.bills[ii].amount;
 
-        // if bill is NOT the last one
-        if(!(ii < state.bills.length - 1)){
-          schedule.push(thisPayPeriod);
+        // If this bill is the last one
+        if((ii >= state.bills.length - 1)){
+          billCounter = 0;
           thisPayPeriod["payTotal"] = payTotal;
           thisPayPeriod["billTotal"] = billTotal;
           thisPayPeriod["left"] = (payTotal - billTotal)
-          billCounter = 0;
+          schedule.push(thisPayPeriod);
         }
       }
       else{
         billCounter = ii;
+
         thisPayPeriod["payTotal"] = payTotal;
         thisPayPeriod["billTotal"] = billTotal;
         thisPayPeriod["left"] = (payTotal - billTotal)
-        schedule.push(thisPayPeriod);
+        // if(thisPayPeriod.length > 0 ){
+
+          schedule.push(thisPayPeriod);
+        // }
+        // Exit this "if" and start again with the next pay period
         break;
       };
     };
