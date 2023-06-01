@@ -47,11 +47,14 @@ ${(() => {
   let monthValue = 100;
   let lastDueDate = 0;
 
+
+  // For each pay period
   for(let i = 0; i < uniquePayPeriods.length; i++){
 
-    ////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
+
     let payTotal = 0;
+    // Get the total pay even if there is more
+    // than one paycheck on that day
     let payTotals = state.payDays.map(payday => {
 
         if(payday.date.substring(0, 10) === uniquePayPeriods[i]){
@@ -59,31 +62,46 @@ ${(() => {
           payTotal += payday.amount;
         }
     })
-    state.payTotal = payTotal;
+
+
     let thisPayPeriod = [];
-    //////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
     let year = uniquePayPeriods[i].substring(0, 4);
     let month = uniquePayPeriods[i].substring(6, 7);
     let fullDueDate = "";
+    let billTotal = 0;
 
+
+    // For every bill that falls between this payday and the next
     for(let ii = billCounter; ii < state.bills.length; ii++){
 
 
       fullDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
 
+      // If the bill does fall into this pay period
       if(fullDueDate >= uniquePayDates[i] && !(fullDueDate >= uniquePayDates[i + 1])){
 
+        // Push this bill onto this pay period
         thisPayPeriod.push(state.bills[ii]);
+        // Record this bill as the last bill pushed
+        // so the next itteration will start with the
+        // next bill
         lastDueDate = state.bills[ii].dueDate;
+        billTotal += state.bills[ii].amount;
 
+        // if bill is NOT the last one
         if(!(ii < state.bills.length - 1)){
           schedule.push(thisPayPeriod);
+          thisPayPeriod["payTotal"] = payTotal;
+          thisPayPeriod["billTotal"] = billTotal;
+          thisPayPeriod["left"] = (payTotal - billTotal)
           billCounter = 0;
         }
       }
       else{
         billCounter = ii;
+        thisPayPeriod["payTotal"] = payTotal;
+        thisPayPeriod["billTotal"] = billTotal;
+        thisPayPeriod["left"] = (payTotal - billTotal)
         schedule.push(thisPayPeriod);
         break;
       };
@@ -108,19 +126,6 @@ ${(() => {
           <tr>
             <th>Due Date</th>
             <th>Bill</th>
-            ${(() => {
-            period.sort((a, b) => {
-              if (a.paidFrom < b.paidFrom) {
-              return -1;
-              }
-              else if (a.paidFrom > b.paidFrom) {
-                return 1;
-              }
-              else{
-              return 0;
-              }
-            })
-          })()}
             ${period
                 .map(pay => {
                   if(!state.columns.includes(pay.paidFrom)){
@@ -165,16 +170,27 @@ ${(() => {
                   returnHtml += `<td></td>`;
                   };
 
-                returnHtml += `</tr>`;
+                if(!(period.billTotal === 0)){
+                  returnHtml += `</tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="totalsDiv">
+                              <table class="totalsTable">
+                                <tr><td>Total Income</td><td class="totalDollars">$${period.payTotal}</td></tr>
+                                <tr><td>Total Bills</td><td class="totalDollars">$${period.billTotal}</td></tr>
+                                <tr><td>Remaining</td><td class="totalDollars">$${period.left}</td></tr>
+                                </tr></tbody></table></div>`;
                 }
-
+                else{
+                  returnHtml += `</tr></tbody></table></div>`
+                }
+              }
                 return returnHtml;
 
           })()}
 
-      </tbody>
-    </table>
-    </div>
+
     </div>
   `})}
   </main>`;

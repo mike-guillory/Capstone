@@ -250,20 +250,26 @@ main{
 
 .totalsDiv{
   display: grid;
-  grid-template-columns: 167px 167px 167px 167px 167px 167px;
+  grid-template-columns: repeat(10, 1fr);
 }
 
 .totalsTable{
-  grid-column: 4 / 7;
-  margin: 20px auto;
+  grid-column: 8 / 10;
+  width: 150px;
+  /* margin: 20px auto; */
   border-spacing: 0px;
 }
 
 .totalsTable > tbody > tr > td{
-  padding-left: 5px;
-  min-width: 120px;
-  height: 20px;
+  /* padding-left: 5px; */
+  min-width: 80px;
+  /* height: 20px; */
   font-size: 14px;
+}
+
+.totalDollars{
+  text-align: right;
+  font-weight: bold;
 }
 
 #loginDiv{
@@ -324,7 +330,6 @@ font-size
 
 footer{
 grid-column: 1 / span 6;
-/* grid-row: 4 / 5; */
 background-color: blue;
 height: 80px;
 width: 100%;
