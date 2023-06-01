@@ -94,7 +94,6 @@ ${(() => {
       }
       else{
         billCounter = ii;
-
         thisPayPeriod["payTotal"] = payTotal;
         thisPayPeriod["billTotal"] = billTotal;
         thisPayPeriod["left"] = (payTotal - billTotal)
@@ -107,7 +106,6 @@ ${(() => {
 
   state["schedule"] = schedule;
   state["index"] = 0;
-
 })()}
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
@@ -167,7 +165,7 @@ ${(() => {
                   returnHtml += `<td></td>`;
                   };
 
-                if(!(period.billTotal === 0)){
+                if(true){
                   returnHtml += `</tr>
                                 </tbody>
                               </table>
