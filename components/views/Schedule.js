@@ -45,13 +45,9 @@ ${(() => {
   const schedule = [];
   let billCounter = 0;
   let monthValue = 100;
-  // let lastDueDate = 0;
-
 
   // For each pay period
   for(let i = 0; i < uniquePayPeriods.length; i++){
-
-    // console.log(`This pay period: ${uniquePayDates[i]}`)
 
     let payTotal = 0;
     // Get the total pay even if there is more
@@ -75,19 +71,12 @@ ${(() => {
     // For every bill that falls between this payday and the next
     for(let ii = billCounter; ii < state.bills.length; ii++){
 
-      // console.log(state.bills[ii].name)
-
       thisBillsDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
       let thisPayDate = uniquePayDates[i];
       let nextPayDate = uniquePayDates[i + 1];
-      // console.log(`This next pay date: ${nextPayDate}`)
 
       // If the bill does fall into this pay period
       if(thisBillsDueDate >= thisPayDate && (thisBillsDueDate < nextPayDate || nextPayDate === undefined)){
-          //  Jul 6    >=   Jun 30    AND    Jul 6  < Jul 6
-        // console.log(`This pay date: ${uniquePayDates[i]}`)
-        // console.log(`This Bill's due Date: ${thisBillsDueDate}`)
-        // console.log(`This next pay date: ${nextPayDate}`)
 
         // Push this bill onto this pay period
         thisPayPeriod.push(state.bills[ii]);
@@ -109,10 +98,7 @@ ${(() => {
         thisPayPeriod["payTotal"] = payTotal;
         thisPayPeriod["billTotal"] = billTotal;
         thisPayPeriod["left"] = (payTotal - billTotal)
-        // if(thisPayPeriod.length > 0 ){
-
-          schedule.push(thisPayPeriod);
-        // }
+        schedule.push(thisPayPeriod);
         // Exit this "if" and start again with the next pay period
         break;
       };
