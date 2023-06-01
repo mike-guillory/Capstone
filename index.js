@@ -70,7 +70,6 @@ function afterRender(state){
 
     // Populate Edit Paydays Form with values of PayDay clicked in Edit Paydays Table ////////
     const payDayDataList = document.querySelectorAll(".payDayData");
-
     payDayDataList.forEach(element => {
       element.addEventListener("click", () => {
 
@@ -86,6 +85,7 @@ function afterRender(state){
       document.getElementById("payDayAmount").setAttribute("value", thisPayDay[0].amount);
 
       setSeletedInList("incomeSource", thisPayDay[0].paySource);
+      setSeletedInList("payDate", payDate);
 
       });
     });
@@ -203,6 +203,8 @@ function afterRender(state){
             }
 
 
+            // console.log(`id = ${payId}`)
+            // console.log(payData)
             updateData("payDays", payId, payData)
 
           break;
