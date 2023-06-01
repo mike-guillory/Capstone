@@ -40,9 +40,9 @@ router.put("/:id", (request, response) => {
   PayDay.findByIdAndUpdate(request.params.id,
     {
       $set:{
-        paySource: body.name,
+        paySource: body.paySource,
         amount: body.amount,
-        payDate: body.payDate
+        date: body.date
       }
     },
     {
