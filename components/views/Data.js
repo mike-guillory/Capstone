@@ -90,9 +90,11 @@ ${(() => {
         .map(payDay => {
           let payDate = new Date(payDay.date).toISOString().substring(0, 10);
           return html`
-            <tr id=${payDay._id}><td class="payDayData">${payDay.paySource}</td>
-            <td id="amount" class="payDayData">${payDay.amount}</td>
-            <td id="date" class="payDayData">${payDate}</td></tr>`
+            <tr id=${payDay._id}>
+            <td class="payDayData">${payDay.paySource}</td>
+            <td class="payDayData">${payDay.amount}</td>
+            <td class="payDayData date">${payDate}</td>
+            </tr>`
 
 
         })}
