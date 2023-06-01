@@ -311,7 +311,6 @@ function afterRender(state){
           console.log("Error:", error);
         });
       };
-
       function deleteData(data, id){
         axios
           .delete(`${process.env.BILLS_API_URL}/${data}/${id}`)
