@@ -202,7 +202,6 @@ function afterRender(state){
               date: updatedPayDay.payDate.value
             }
 
-            alert(updatedPayDay.payDate.value)
 
             updateData("payDays", payId, payData)
 
@@ -326,7 +325,7 @@ function afterRender(state){
 
   const date = new Date();
   const year = date.getFullYear();
-  document.getElementById("date").innerHTML = year;
+  document.getElementsByClassName("date").innerHTML = year;
 }
 
 // 5. Router.hooks
@@ -379,21 +378,21 @@ router.hooks({
           axios.get(`${process.env.BILLS_API_URL}/incomeSources`),
           axios.get(`${process.env.BILLS_API_URL}/payDays`)
         ])
-          .then(responses => {
-            const [bills, incomeSources, payDays] = responses;
-            store.Schedule.bills = bills.value.data;
-            store.Schedule.incomeSources = incomeSources.value.data;
-            store.Schedule.payDays = payDays.value.data;
+        .then(responses => {
+          const [bills, incomeSources, payDays] = responses;
+          store.Schedule.bills = bills.value.data;
+          store.Schedule.incomeSources = incomeSources.value.data;
+          store.Schedule.payDays = payDays.value.data;
 
-            // Empty columns array
-            store.Schedule.columns.splice(0, store.Schedule.columns.length);
+          // Empty columns array
+          store.Schedule.columns.splice(0, store.Schedule.columns.length);
 
-            done();
-          })
-          .catch((error) => {
-            console.log("Error:", error);
-            done();
-          });
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
+        });
         break;
       case "Data":
         Promise.allSettled([
@@ -402,19 +401,18 @@ router.hooks({
           axios.get(`${process.env.BILLS_API_URL}/paymentSources`),
           axios.get(`${process.env.BILLS_API_URL}/payDays`)
         ])
+        .then(responses => {
+          const [bills, incomeSources, paymentSources, payDays] = responses;
+          store.Data.bills = bills.value.data;
+          store.Data.incomeSources = incomeSources.value.data;
+          store.Data.paymentSources = paymentSources.value.data;
+          store.Data.payDays = payDays.value.data;
 
-          .then(responses => {
-            const [bills, incomeSources, paymentSources, payDays] = responses;
-            store.Data.bills = bills.value.data;
-            store.Data.incomeSources = incomeSources.value.data;
-            store.Data.paymentSources = paymentSources.value.data;
-            store.Data.payDays = payDays.value.data;
-
-            done();
-          })
-          .catch((error) => {
-            console.log("Error:", error);
-            done();
+          done();
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+          done();
           });
         break;
       default:
