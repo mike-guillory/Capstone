@@ -7,7 +7,7 @@ h1{
 }
 
 #root{
-  width: 90vw;
+  width: 60vw;
   margin: 10px auto;
   border: 1px solid;
   border-radius: 10px;
@@ -294,7 +294,7 @@ main{
   margin: 40px auto;
   padding: 40px;
   height: 340px;
-  width: 500px;
+  width: 45%;
   border: 1px solid;
   background-color: #7261ed;
   border-radius: 10px;
@@ -302,7 +302,7 @@ main{
 
 #contactForm{
   /* width: 323px; */
-  width: 85%;
+  width: 95%;
   text-align: left;
   /* padding-right: 50px; */
   font-size: 14px;
@@ -317,11 +317,16 @@ textarea{
   resize: none;
   margin-top: 5px;
   height: 12em;
-  width: 26.5em;
+  width: 100%;
 }
-font-size
+
+#areaLable{
+  height: 50px;
+}
+
+
 #contactForm > input[type=submit]{
-  margin-left: 150px;
+  margin-left: 130px;
 }
 
 footer{
@@ -346,7 +351,27 @@ margin-top: 40px;
   }
 }
 
+/*/////// Media Querries /////////////////////*/
+@media(max-width: 667px){
+
+  #root{
+    width: 90vw;
+  }
+
+  input[type=text]{
+    max-width: 155px;
+  }
+
+  #contactForm > input[type=submit]{
+    margin-left: 95px;
+  }
+}
+
 @media(max-width: 375px){
+
+  #root{
+    width: 90vw;
+  }
 
   .hidden--mobile {
     display: none;
@@ -357,11 +382,12 @@ margin-top: 40px;
   }
 
   #currentWeather{
-    font-size: 14px;
+    font-size: 12px;
   }
 
   nav > ul{
     background-color: #00008b;
+    font-size: 20px;
     margin-top: -20px;
     margin-left: 0px;
     text-align: center;
@@ -369,7 +395,7 @@ margin-top: 40px;
 
   nav > ul > li{
     display: block;
-    padding-right: 60px;
+    padding-right: 20px;
     margin-bottom: 2px;
   }
 
@@ -381,8 +407,9 @@ margin-top: 40px;
     max-width: 90%;
   }
 
-  form{
-    padding-right: 40px;
+  #contactForm{
+    width: 10px;
+    margin: none;
   }
 
   input[type=text]{
@@ -394,16 +421,20 @@ margin-top: 40px;
   }
 
   input[type=submit]{
-    margin-top: 5%;
-    margin-right: 30%;
+    margin: 0 120px;
   }
 
   #contactDiv{
     width: 60%;
   }
 
+  #contactForm{
+    width: 100%;
+    font-size: 12px;
+  }
+
   #contactForm > input[type=submit]{
-    margin-left: 90px;
+    margin: 10px 75px;
   }
 
   textarea{
@@ -413,6 +444,21 @@ margin-top: 40px;
 
   .scheduleTable {
     border: 2px solid black;
+  }
+
+  .editTable{
+    grid-column: 2 / 20;
+    grid-row: 2;
+  }
+
+  .editForm{
+    margin-top: 20px;
+    grid-column: 2 / 20;
+    grid-row: 3;
+  }
+
+  .scheduleTable{
+    width: 90%;
   }
 
   .scheduleTable > thead{
@@ -430,8 +476,21 @@ margin-top: 40px;
     font-size: 10px;
   }
 
-  .totalsDiv{
+  /* .totalsDiv{
     display: block;
+  } */
+
+  .totalsDiv{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    margin-bottom: 40px;
+  }
+
+  .totalsTable{
+    grid-column: 8 / 10;
+    width: 150px;
+    /* margin: 20px auto; */
+    border-spacing: 0px;
   }
 
 }

@@ -8,7 +8,7 @@ export default (state) => html`
     <label for="fname">First Name: </label><input name="fname" type="text"><br><br>
     <label for="lname">Last Name: </label><input name="lname" type="text"><br><br>
     <label for="email">Email: </label><input name="email" type="email"><br><br>
-    <label for="reason">Reason for contacting us:</label><br>
+    <label for="reason" id="areaLable">Reason for contacting us:</label><br>
     <textarea name="reason"></textarea><br><br>
     <input type="submit" value="Submit">
   </form>
