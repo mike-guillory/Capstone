@@ -48,7 +48,7 @@ ${(() => {
               return html`
                 <tr id=${bill._id}><td class="billData">${bill.name}</td>
                 <td class="billData">${bill.dueDate}</td>
-                <td class="billData">${bill.amount}</td>
+                <td class="billData">$${bill.amount}</td>
                 <td class="billData">${bill.paidFrom}</td></tr>`
           })}
       </tbody>
@@ -92,7 +92,7 @@ ${(() => {
           return html`
             <tr id=${payDay._id}>
             <td class="payDayData">${payDay.paySource}</td>
-            <td class="payDayData">${payDay.amount}</td>
+            <td class="payDayData">$${payDay.amount}</td>
             <td class="payDayData date">${payDate}</td>
             </tr>`
 
@@ -161,7 +161,7 @@ ${(() => {
       .map(source  => {
          return html`
           <tr id=${source._id}><td class="incomeSourceData">${source.name}</td>
-          <td class="incomeSourceData">${source.amount}</td>`
+          <td class="incomeSourceData">$${source.amount}</td>`
           // <td class="incomeSourceData">${source.frequency}</td>
           // <td class="incomeSourceData">${source.startingDate}</td></tr>
       })}

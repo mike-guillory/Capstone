@@ -26,87 +26,114 @@ ${(() => {
     else{
       return 0;
     }
-  })
+  });
 
+  function getMonthName(number){
+    const date = new Date();
+    date.setMonth(number - 1);
+    return date.toLocaleString("en-US", {month: "short"});
+  }
+
+  // Convert payday dates "YYYY-MM-DDT00:00:00.000Z" to Epoc date
+  // to compare with bill due date
   const payDays = state.payDays.map((date) => {
     let shortDate = date.date.substring(0, 10)
     let epocDate = new Date(shortDate).getTime() + 60000000;
     return  epocDate;
   });
-
   let uniquePayDates = [...new Set(payDays)];
+
+  // Sometimes need pay periods in yyyy-mm-dd
   const payPeriods = uniquePayDates.map((date) => {
     return new Date(date).toISOString().substring(0, 10);
   });
-
   let uniquePayPeriods = [...new Set(payPeriods)];
   state["uniquePayPeriods"] = uniquePayPeriods;
 
   const schedule = [];
-  let billCounter = 0;
-  let monthValue = 100;
+  const billsDue = [];
 
-  // For each pay period
-  for(let i = 0; i < uniquePayPeriods.length; i++){
+  // payMonths will be used to convert bill due dates from 1 or 2 digit
+  // day of the month to yyyy-mm-dd for each month where there
+  // are paydays
+  const payMonths = uniquePayPeriods.map(period => {
 
-    let payTotal = 0;
-    // Get the total pay even if there is more
-    // than one paycheck on that day
-    let payTotals = state.payDays.map(payday => {
+    let year = parseInt(period.substring(0, 4));
+    let month = parseInt(period.substring(5, 7));
+    return `${year}-${month}`;
+  });
+  const uniquePayMonths = [...new Set(payMonths)];
+
+  billsDueByMonth = uniquePayMonths.map(date => {
+
+      return state.bills.map(bill => {
+
+        let day = `${date.substring(0, 4)}-${date.substring(5, 7)}-${bill.dueDate}`;
+        let epocDate = new Date(day).getTime() + 42000000;
+        let monthName = getMonthName(date.substring(5, 7));
+        return {
+          id: bill._id,
+          name: bill.name,
+          amount: bill.amount,
+          dueDate: `${monthName}-${bill.dueDate}`,
+          dueDateEpoc: epocDate,
+          paidFrom: bill.paidFrom
+        };
+      });
+  });
+
+
+
+  billsDueByMonth.map(bill => {
+    bill.map(b => {
+      billsDue.push(b);
+    });
+  });
+
+  uniquePayDates.map((payDay, i, array) => {
+
+      let payTotal = 0;
+      let billTotal = 0;
+
+      let month = getMonthName(uniquePayPeriods[i].substring(5, 7));
+      let day = parseInt(uniquePayPeriods[i].substring(8, 10));
+      let thisPayDate = `${month}-${day}`;
+
+      state.payDays.map(payday => {
 
         if(payday.date.substring(0, 10) === uniquePayPeriods[i]){
 
           payTotal += payday.amount;
-        }
-    })
+        };
+      });
 
+      let nextPayDay = array[i + 1];
+      const thisPayPeriod = [];
 
-    let thisPayPeriod = [];
-    let year = uniquePayPeriods[i].substring(0, 4);
-    let month = uniquePayPeriods[i].substring(6, 7);
-    let thisBillsDueDate = 0;
-    let billTotal = 0;
+      billsDue.map((bill, i, index) => {
 
-
-    // For every bill that falls between this payday and the next
-    for(let ii = billCounter; ii < state.bills.length; ii++){
-
-      thisBillsDueDate = new Date(year, (month - 1), state.bills[ii].dueDate).getTime() + 42000000;
-      let thisPayDate = uniquePayDates[i];
-      let nextPayDate = uniquePayDates[i + 1];
-
-      // If the bill does fall into this pay period
-      if(thisBillsDueDate >= thisPayDate && (thisBillsDueDate < nextPayDate || nextPayDate === undefined)){
-
-        // Push this bill onto this pay period
-        thisPayPeriod.push(state.bills[ii]);
-
-        billTotal += state.bills[ii].amount;
-
-        // If this bill is the last one
-        if((ii >= state.bills.length - 1)){
-          billCounter = 0;
+        if(bill.dueDateEpoc >= payDay && !(bill.dueDateEpoc >= nextPayDay)){
+          thisPayPeriod.push(bill);
+          billTotal += bill.amount;
           thisPayPeriod["payTotal"] = payTotal;
           thisPayPeriod["billTotal"] = billTotal;
-          thisPayPeriod["left"] = (payTotal - billTotal)
-          schedule.push(thisPayPeriod);
+          thisPayPeriod["left"] = payTotal - billTotal;
         }
-      }
-      else{
-        billCounter = ii;
-        thisPayPeriod["payTotal"] = payTotal;
-        thisPayPeriod["billTotal"] = billTotal;
-        thisPayPeriod["left"] = (payTotal - billTotal)
-        schedule.push(thisPayPeriod);
-        // Exit this "if" and start again with the next pay period
-        break;
-      };
-    };
-  };
+        else{
+          thisPayPeriod["payTotal"] = payTotal;
+          thisPayPeriod["billTotal"] = billTotal;
+          thisPayPeriod["left"] = payTotal - billTotal;
+          thisPayPeriod["date"] = thisPayDate;
+        };
+      });
+      schedule.push(thisPayPeriod);
+  });
 
   state["schedule"] = schedule;
   state["index"] = 0;
+
 })()}
+
 <main>
   <h2 class="pageHeading" >${state.pageHeading}</h2>
   ${state.schedule
@@ -115,7 +142,7 @@ ${(() => {
     state.columns.splice(0, state.columns.length);
       return html`
     <div class="scheduleDiv">
-      <h3>Pay Date: ${state.uniquePayPeriods[state.index - 1].substring(5, 10)}</h3>
+      <h3>Pay Date: ${period.date}</h3>
       <table class="scheduleTable">
       <thead>
           <tr>
@@ -143,7 +170,7 @@ ${(() => {
 
                 for(let i = 0; i < state.columns.length; i++){
                     if(pay.paidFrom === state.columns[i]){
-                      returnHtml += `<td>${pay.amount}</td>`;
+                      returnHtml += `<td>$${pay.amount}</td>`;
                     }
                     else{
                       returnHtml += `<td></td>`;

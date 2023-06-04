@@ -325,9 +325,9 @@ function afterRender(state){
 
     })});
 
-  const date = new Date();
-  const year = date.getFullYear();
-  document.getElementsByClassName("date").innerHTML = year;
+    const date = new Date();
+    const year = date.getFullYear();
+    document.getElementById("date").innerHTML = year;
 }
 
 // 5. Router.hooks
