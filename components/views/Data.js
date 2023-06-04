@@ -1,34 +1,6 @@
 import html from "html-literal";
 
 export default (state) => html`
-${(() => {
-  state.bills.sort((a, b) => {
-    if (a.dueDate < b.dueDate) {
-      return -1;
-    }
-    if (a.dueDate > b.dueDate) {
-      return 1;
-    }
-    else{
-      return 0;
-    }
-  })
-})()}
-
-${(() => {
-  state.payDays.sort((a, b) => {
-    if (a.date < b.date) {
-      return -1;
-    }
-    if (a.date > b.date) {
-      return 1;
-    }
-    else{
-      return 0;
-    }
-  })
-})()}
-
 <main>
 <h2 class="pageHeading" >${state.pageHeading}</h2>
   <div id="editBillsDiv" class="editDiv">
@@ -95,8 +67,6 @@ ${(() => {
             <td class="payDayData">$${payDay.amount}</td>
             <td class="payDayData date">${payDate}</td>
             </tr>`
-
-
         })}
 
       </tbody>

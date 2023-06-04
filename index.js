@@ -389,6 +389,134 @@ router.hooks({
           // Empty columns array
           store.Schedule.columns.splice(0, store.Schedule.columns.length);
 
+          store.Schedule.payDays.sort((a, b) => {
+            if (a.date < b.date) {
+              return -1;
+            }
+            if (a.date > b.date) {
+              return 1;
+            }
+            else{
+              return 0;
+            }
+          });
+
+          store.Schedule.bills.sort((a, b) => {
+            if (a.dueDate < b.dueDate) {
+               return -1;
+            }
+            else if (a.dueDate > b.dueDate) {
+              return 1;
+            }
+            else{
+              return 0;
+            }
+          });
+
+          function getMonthName(number){
+            const date = new Date();
+            date.setMonth(number - 1);
+            return date.toLocaleString("en-US", {month: "short"});
+          }
+
+          // Convert payday dates "YYYY-MM-DDT00:00:00.000Z" to Epoc date
+          // to compare with bill due date
+          const pDays = store.Schedule.payDays.map((date) => {
+            let shortDate = date.date.substring(0, 10)
+            let epocDate = new Date(shortDate).getTime() + 60000000;
+            return  epocDate;
+          });
+          let uniquePayDates = [...new Set(pDays)];
+
+          // Sometimes need pay periods in yyyy-mm-dd
+          const payPeriods = uniquePayDates.map((date) => {
+            return new Date(date).toISOString().substring(0, 10);
+          });
+          let uniquePayPeriods = [...new Set(payPeriods)];
+          store.Schedule["uniquePayPeriods"] = uniquePayPeriods;
+
+          const schedule = [];
+          const billsDue = [];
+
+          // payMonths will be used to convert bill due dates from 1 or 2 digit
+          // day of the month to yyyy-mm-dd for each month where there
+          // are paydays
+          const payMonths = uniquePayPeriods.map(period => {
+
+            let year = parseInt(period.substring(0, 4));
+            let month = parseInt(period.substring(5, 7));
+            return `${year}-${month}`;
+          });
+          const uniquePayMonths = [...new Set(payMonths)];
+
+          const billsDueByMonth = uniquePayMonths.map(date => {
+
+              return store.Schedule.bills.map(bill => {
+
+                let day = `${date.substring(0, 4)}-${date.substring(5, 7)}-${bill.dueDate}`;
+                let epocDate = new Date(day).getTime() + 42000000;
+                let monthName = getMonthName(date.substring(5, 7));
+                return {
+                  id: bill._id,
+                  name: bill.name,
+                  amount: bill.amount,
+                  dueDate: `${monthName}-${bill.dueDate}`,
+                  dueDateEpoc: epocDate,
+                  paidFrom: bill.paidFrom
+                };
+              });
+          });
+
+
+
+          billsDueByMonth.map(bill => {
+            bill.map(b => {
+              billsDue.push(b);
+            });
+          });
+
+          uniquePayDates.map((payDay, i, array) => {
+
+              let payTotal = 0;
+              let billTotal = 0;
+
+              let month = getMonthName(uniquePayPeriods[i].substring(5, 7));
+              let day = parseInt(uniquePayPeriods[i].substring(8, 10));
+              let thisPayDate = `${month}-${day}`;
+
+              store.Schedule.payDays.map(payday => {
+
+                if(payday.date.substring(0, 10) === uniquePayPeriods[i]){
+
+                  payTotal += payday.amount;
+                };
+              });
+
+              let nextPayDay = array[i + 1];
+              const thisPayPeriod = [];
+
+              billsDue.map((bill, i, index) => {
+
+                if(bill.dueDateEpoc >= payDay && !(bill.dueDateEpoc >= nextPayDay)){
+                  thisPayPeriod.push(bill);
+                  billTotal += bill.amount;
+                  thisPayPeriod["payTotal"] = payTotal;
+                  thisPayPeriod["billTotal"] = billTotal;
+                  thisPayPeriod["left"] = payTotal - billTotal;
+                }
+                else{
+                  thisPayPeriod["payTotal"] = payTotal;
+                  thisPayPeriod["billTotal"] = billTotal;
+                  thisPayPeriod["left"] = payTotal - billTotal;
+                  thisPayPeriod["date"] = thisPayDate;
+                };
+              });
+              schedule.push(thisPayPeriod);
+          });
+
+          store.Schedule["schedule"] = schedule;
+          store.Schedule["index"] = 0;
+
           done();
         })
         .catch((error) => {
@@ -409,6 +537,30 @@ router.hooks({
           store.Data.incomeSources = incomeSources.value.data;
           store.Data.paymentSources = paymentSources.value.data;
           store.Data.payDays = payDays.value.data;
+
+          store.Data.bills.sort((a, b) => {
+            if (a.dueDate < b.dueDate) {
+              return -1;
+            }
+            if (a.dueDate > b.dueDate) {
+              return 1;
+            }
+            else{
+              return 0;
+            }
+          })
+
+          store.Data.payDays.sort((a, b) => {
+            if (a.date < b.date) {
+              return -1;
+            }
+            if (a.date > b.date) {
+              return 1;
+            }
+            else{
+              return 0;
+            }
+          })
 
           done();
         })
