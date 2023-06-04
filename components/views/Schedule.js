@@ -64,7 +64,7 @@ ${(() => {
   });
   const uniquePayMonths = [...new Set(payMonths)];
 
-  billsDueByMonth = uniquePayMonths.map(date => {
+  const billsDueByMonth = uniquePayMonths.map(date => {
 
       return state.bills.map(bill => {
 
