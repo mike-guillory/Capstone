@@ -467,8 +467,6 @@ router.hooks({
               });
           });
 
-
-
           billsDueByMonth.map(bill => {
             bill.map(b => {
               billsDue.push(b);
