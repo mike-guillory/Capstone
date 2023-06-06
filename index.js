@@ -36,6 +36,16 @@ function afterRender(state){
   // IF DATA PAGE //////////////////////////////////////////////////
   if(state === store.Data){
 
+    let selectSource = document.getElementById("incomeSource");
+    selectSource.addEventListener("change", () => {
+      let selected = store.Data.incomeSources.filter(source => source.name === selectSource.value);
+      // console.log(selected)
+      document.getElementById("payDayAmount").setAttribute("value", selected[0].amount);
+    })
+
+    // let thisAmount = store.Data.incomeSources.filter(source => source.name === thisPayDay[0].paySource)
+
+
     function setSeletedInList(id, valueToSelect) {
       let element = document.getElementById(id);
       element.value = valueToSelect;
