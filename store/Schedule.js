@@ -5,5 +5,6 @@ export default{
   incomeSources: [],
   payDays: [],
   rows: 0,
-  columns: []
+  columns: [],
+  schedule: []
 };
