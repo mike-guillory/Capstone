@@ -573,8 +573,49 @@ router.hooks({
 },
   already: (params) => {
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
+
+    if(view === "Data"){
+      Promise.allSettled([
+        axios.get(`${process.env.BILLS_API_URL}/bills`),
+        axios.get(`${process.env.BILLS_API_URL}/incomeSources`),
+        axios.get(`${process.env.BILLS_API_URL}/paymentSources`),
+        axios.get(`${process.env.BILLS_API_URL}/payDays`)
+      ])
+      .then(responses => {
+        const [bills, incomeSources, paymentSources, payDays] = responses;
+        store.Data.bills = bills.value.data;
+        store.Data.incomeSources = incomeSources.value.data;
+        store.Data.paymentSources = paymentSources.value.data;
+        store.Data.payDays = payDays.value.data;
+
+        store.Data.bills.sort((a, b) => {
+          if (a.dueDate < b.dueDate) {
+            return -1;
+          }
+          if (a.dueDate > b.dueDate) {
+            return 1;
+          }
+          else{
+            return 0;
+          }
+        })
+
+        store.Data.payDays.sort((a, b) => {
+          if (a.date < b.date) {
+            return -1;
+          }
+          if (a.date > b.date) {
+            return 1;
+          }
+          else{
+            return 0;
+          }
+        })
+    })
+
     render(store[view]);
   }
+}
 });
 
 // 6.Router.on
